@@ -7,6 +7,8 @@ import Register from "../Pages/AuthPages/Register";
 import SellerLogin from "../Pages/AuthPages/SellerLogin";
 import SellerRegister from "../Pages/AuthPages/SellerRegister";
 import DashBoardLayout from "../Layout/DashBoardLayout/DashBoardLayout";
+import MyProducts from "../Pages/Dashboard/Seller/MyProducts"
+import BuyerRoute from "./BuyerRoute";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +33,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/blog",
-                element: <Blog></Blog>
+                element: <BuyerRoute><Blog></Blog></BuyerRoute>
             },
             {
                 path: "/seller-login",
@@ -51,8 +53,12 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/dashboard",
+                element: <MyProducts></MyProducts>
+            },
+            {
+                path: "/dashboard",
                 
-            }
+            },
         ]
     }
 ])
