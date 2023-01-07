@@ -13,6 +13,7 @@ const SellerRegister = () => {
         
         const handleSignIn = (data) => {
             console.log(data);
+            
         }
         
       return (
