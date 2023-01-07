@@ -25,7 +25,7 @@ const Navbar = () => {
       navigate('/login');
     }
     if (data.login === "Seller Login") {
-      navigate('/register')
+      navigate('/seller-login')
     }
   };
   return (
