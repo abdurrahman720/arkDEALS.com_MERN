@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const SellerLogin = () => {
-    const { emailSignIn } = useContext(AuthContext);
+    const { emailSignIn, googleSign } = useContext(AuthContext);
     const navigate = useNavigate()
     const {
         register,
@@ -36,6 +36,41 @@ const SellerLogin = () => {
                 setLoginError(err.message)
             })
         }
+    
+        const handleGoogleSign = () => {
+            googleSign().then((res) => {
+              const signedUser = res.user;
+              console.log(signedUser);
+              const user = {
+                name: signedUser.displayName,
+                email: signedUser.email,
+                role: "buyer",
+              };
+              fetch(`http://localhost:5001/add-users`, {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(user),
+              })
+                .then((res) => res.json())
+                .then((data) => {
+                  if (data.acknowledged) {
+                    //jwt token
+                    fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+                      .then((res) => res.json())
+                      .then((data) => {
+                        console.log(data.accessToken);
+                        localStorage.setItem("arkDeals", data.accessToken);
+                        toast.success("Registration Success as Buyer!");
+                        navigate("/");
+                      });
+                  }
+                });
+            }).catch(err => {
+                setLoginError(err.message)
+            })
+          };
         
       return (
         <div className="hero min-h-screen bg-base-200">
@@ -77,7 +112,12 @@ const SellerLogin = () => {
                           </form>
                           <p className='text-sm'>New to arkDEALS.com? <Link className='text-secondary' to="/seller-register">Register as Seller</Link></p>
                     <div className="divider">OR</div>
-                    <button className='btn btn-outline btn-secondary w-full'>CONTINUE WITH GOOGLE</button>
+                    <button
+              onClick={handleGoogleSign}
+              className="btn btn-outline btn-secondary w-full"
+            >
+              CONTINUE WITH GOOGLE
+            </button>
                       </div>
                      
             </div>

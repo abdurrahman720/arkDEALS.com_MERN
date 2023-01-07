@@ -6,7 +6,7 @@ import { AuthContext } from '../../Context/AuthProvider';
 
 const Register = () => {
     
-    const {emailSignUp,updateName} = useContext(AuthContext)
+    const {emailSignUp,updateName,googleSign} = useContext(AuthContext)
     const {
         register,
         handleSubmit,
@@ -56,7 +56,39 @@ const Register = () => {
                 .catch(error => {
             setSignError(error.message)
         })
-        }
+    }
+    const handleGoogleSign = () => {
+        googleSign().then((res) => {
+          const signedUser = res.user;
+          console.log(signedUser);
+          const user = {
+            name: signedUser.displayName,
+            email: signedUser.email,
+            role: "buyer",
+          };
+          fetch(`http://localhost:5001/add-users`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(user),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.acknowledged) {
+                //jwt token
+                fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+                  .then((res) => res.json())
+                  .then((data) => {
+                    console.log(data.accessToken);
+                    localStorage.setItem("arkDeals", data.accessToken);
+                    toast.success("Registration Success as Buyer!");
+                    navigate("/");
+                  });
+              }
+            });
+        })
+      };
         
       return (
         <div className="hero min-h-screen bg-base-200">
@@ -107,7 +139,12 @@ const Register = () => {
                           </form>
                           <p className='text-sm'>Want to sell on arkDEALS.com? <Link className='text-secondary' to="/seller-register">Register as Seller</Link></p>
                     <div className="divider">OR</div>
-                    <button className='btn btn-outline btn-secondary w-full'>CONTINUE WITH GOOGLE</button>
+                    <button
+              onClick={handleGoogleSign}
+              className="btn btn-outline btn-secondary w-full"
+            >
+              CONTINUE WITH GOOGLE
+            </button>
                       </div>
                      
             </div>
