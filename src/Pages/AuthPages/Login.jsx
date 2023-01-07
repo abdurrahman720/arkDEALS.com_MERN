@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { AuthContext } from "../../Context/AuthProvider";
 
 const Login = () => {
+    const navigate = useNavigate()
     const {emailSignIn} = useContext(AuthContext)
   const {
     register,
@@ -21,6 +23,14 @@ const Login = () => {
                 const user = userCredentials.user;
                 console.log(user);
                 //jwt token
+                fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+                                    .then(res => res.json())
+                    .then(data => {
+                                        console.log(data.accessToken);
+                                        localStorage.setItem('arkDeals', data.accessToken);
+                                        toast.success("Login SuccessFully!")
+                                        navigate('/')
+                                })
 
             }).catch(err => {
             setLoginError(err.message)
@@ -65,7 +75,7 @@ const Login = () => {
                         {loginError && <p className='text-red-600'>{loginError}</p>}
                     </div>
                       </form>
-                      <p className='text-sm'>New to arkDEALS.com? <Link className='text-secondary' to="/register">Create new Account</Link></p>
+                      <p className='text-sm'>New to arkDEALS.com? <Link className='text-secondary' to="/register">Register as Buyer</Link></p>
                 <div className="divider">OR</div>
                 <button className='btn btn-outline btn-secondary w-full'>CONTINUE WITH GOOGLE</button>
                   </div>
