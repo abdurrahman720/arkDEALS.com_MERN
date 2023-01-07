@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../../Context/AuthProvider';
 
 const SellerLogin = () => {
+    const { emailSignIn } = useContext(AuthContext);
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -12,7 +16,25 @@ const SellerLogin = () => {
         const [loginError, setLoginError] = useState('');
         
         const handleLogin = (data) => {
+            setLoginError('')
             console.log(data);
+            emailSignIn(data.email, data.password)
+                .then(userCredentials => {
+                    const user = userCredentials.user;
+                    console.log(user);
+                    //jwt token
+                    fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+                                        .then(res => res.json())
+                        .then(data => {
+                                            console.log(data.accessToken);
+                                            localStorage.setItem('arkDeals', data.accessToken);
+                                            toast.success("Login SuccessFully!")
+                                            navigate('/')
+                                    })
+    
+                }).catch(err => {
+                setLoginError(err.message)
+            })
         }
         
       return (
