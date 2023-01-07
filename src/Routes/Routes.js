@@ -6,6 +6,7 @@ import Login from "../Pages/AuthPages/Login";
 import Register from "../Pages/AuthPages/Register";
 import SellerLogin from "../Pages/AuthPages/SellerLogin";
 import SellerRegister from "../Pages/AuthPages/SellerRegister";
+import DashBoardLayout from "../Layout/DashBoardLayout/DashBoardLayout";
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +40,18 @@ export const router = createBrowserRouter([
             {
                 path: "/seller-register",
                 element: <SellerRegister></SellerRegister>
+            }
+        ]
+        
+        
+    },
+    {
+        path: '/dashboard',
+        element: <DashBoardLayout></DashBoardLayout>,
+        children: [
+            {
+                path: "/dashboard",
+                
             }
         ]
     }

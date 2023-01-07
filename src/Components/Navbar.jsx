@@ -77,7 +77,10 @@ const Navbar = () => {
       <div className="navbar-end">
         {user?.email ? (
           <>
-            <Link className="btn">Dashboard</Link>
+            
+            <label htmlFor="dashboard-drawer" className="btn  drawer-button md:hidden">Dashboard</label>
+            
+            <Link to='/dashboard' className="btn hidden md:flex">Dashboard</Link>
 
             <Link onClick={handleLogOut} className="ml-2 ">
               <FiLogOut className="" />
