@@ -39,16 +39,17 @@ const Register = () => {
                             })
                                 .then(res => res.json())
                                 .then(data => {
-                                    console.log('user saved to database');
-                                //jwt token
-                                    fetch(`http://localhost:5001/jwt?email=${data.email}`)
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            console.log(data.accessToken);
-                                            localStorage.setItem('arkDeals', data.accessToken);
-                                            toast.success("Registration Success!")
-                                            navigate('/')
-                                    })
+                                    if (data.acknowledged) {
+                                          //jwt token
+                                    fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        localStorage.setItem('arkDeals', data.accessToken);
+                                        toast.success("Registration Success as Buyer!")
+                                        navigate('/')
+                                })
+                                   }
+                             
                             })
                     })
                 })
