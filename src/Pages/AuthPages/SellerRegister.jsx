@@ -1,20 +1,64 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../../Context/AuthProvider';
 
 const SellerRegister = () => {
+  const {emailSignUp,updateName}  = useContext(AuthContext)
     const {
         register,
         handleSubmit,
         formState: { errors },
       } = useForm();
         
+      const navigate = useNavigate()
         const [signError, setSignError] = useState('');
         
         const handleSignIn = (data) => {
-            console.log(data);
-            
-        }
+          setSignError('')
+          console.log(data);
+          emailSignUp(data.email, data.password)
+              .then(userCredentials => {
+                  const signedInUser = userCredentials.user;
+                  console.log(signedInUser);
+                  updateName(data.name)
+                      .then(() => {
+                          console.log('name updated');
+                          const user = {
+                              name: data.name,
+                              email: data.email,
+                              role: 'seller'
+                          }
+                          fetch(`http://localhost:5001/add-users`, {
+                              method: 'POST',
+                              headers: {
+                                  'content-type': 'application/json'
+                              },
+                              body: JSON.stringify(user)
+                          })
+                              .then(res => res.json())
+                              .then(data => {
+                                if (data.acknowledged) {
+                                  //jwt token
+                                  fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+                                  .then(res => res.json())
+                                  .then(data => {
+                                      console.log(data.accessToken);
+                                      localStorage.setItem('arkDeals', data.accessToken);
+                                      toast.success("Registration Success as Seller!")
+                                      navigate('/')
+                              })
+                                 }
+                              
+                              
+                          })
+                  })
+              })
+              .catch(error => {
+          setSignError(error.message)
+      })
+      }
         
       return (
         <div className="hero min-h-screen bg-base-200">

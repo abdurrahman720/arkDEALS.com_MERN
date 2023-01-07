@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider";
 
 const Login = () => {
+    const {emailSignIn} = useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -12,7 +14,17 @@ const Login = () => {
     const [loginError, setLoginError] = useState('');
     
     const handleLogin = (data) => {
+        setLoginError('')
         console.log(data);
+        emailSignIn(data.email, data.password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                console.log(user);
+                //jwt token
+
+            }).catch(err => {
+            setLoginError(err.message)
+        })
     }
     
   return (

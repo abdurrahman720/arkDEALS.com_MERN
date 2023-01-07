@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/png/logo.png";
 import { FiLogOut } from "react-icons/fi";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../Context/AuthProvider";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        toast.info('Logged Out!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  let user = { email: "" };
+ 
   const menuItems = (
     <>
       <li>
@@ -67,7 +79,7 @@ const Navbar = () => {
           <>
             <Link className="btn">Dashboard</Link>
 
-            <Link className="ml-2 ">
+            <Link onClick={handleLogOut} className="ml-2 ">
               <FiLogOut className="" />
             </Link>
           </>
