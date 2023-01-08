@@ -6,7 +6,7 @@ import { AuthContext } from '../../../Context/AuthProvider';
 const Overview = () => {
     const {user} = useContext(AuthContext)
     const { data:currentUser, isLoading } = useQuery({
-        queryKey: [user?.email],
+        queryKey: ['currentUser'],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5001/profile/${user?.email}`, {
                 headers: {
