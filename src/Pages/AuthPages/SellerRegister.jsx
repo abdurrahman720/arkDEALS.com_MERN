@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const SellerRegister = () => {
-  const {emailSignUp,updateName,googleSign}  = useContext(AuthContext)
+  const {emailSignUp,updateName,googleSign,isLoading}  = useContext(AuthContext)
     const {
         register,
         handleSubmit,
@@ -47,7 +47,7 @@ const SellerRegister = () => {
                                       console.log(data.accessToken);
                                       localStorage.setItem('arkDeals', data.accessToken);
                                       toast.success("Registration Success as Seller!")
-                                      navigate('/')
+                                      navigate('/dashboard')
                               })
                                  }
                               
@@ -56,7 +56,8 @@ const SellerRegister = () => {
                   })
               })
               .catch(error => {
-          setSignError(error.message)
+                setSignError(error.message)
+                isLoading(false)
       })
         }
         const handleGoogleSign = () => {
@@ -85,12 +86,13 @@ const SellerRegister = () => {
                       console.log(data.accessToken);
                       localStorage.setItem("arkDeals", data.accessToken);
                       toast.success("Registration Success as Buyer!");
-                      navigate("/");
+                      navigate("/dashboard");
                     });
                 }
               });
           }).catch(err => {
-             console.log(err.message)
+            console.log(err.message)
+            isLoading(false)
           })
         };
         

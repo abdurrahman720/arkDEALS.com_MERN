@@ -1,19 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const Register = () => {
     
-    const {emailSignUp,updateName,googleSign} = useContext(AuthContext)
+    const {emailSignUp,updateName,googleSign,isLoading} = useContext(AuthContext)
     const {
         register,
         handleSubmit,
         formState: { errors },
       } = useForm();
         const navigate = useNavigate()
-        const [signError, setSignError] = useState('');
+  const [signError, setSignError] = useState('');
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || '/'
         
     const handleSignIn = (data) => {
             setSignError('')
@@ -46,7 +48,7 @@ const Register = () => {
                                     .then(data => {
                                         localStorage.setItem('arkDeals', data.accessToken);
                                         toast.success("Registration Success as Buyer!")
-                                        navigate('/')
+                                        navigate(from,{replace:true})
                                 })
                                    }
                              
@@ -54,7 +56,8 @@ const Register = () => {
                     })
                 })
                 .catch(error => {
-            setSignError(error.message)
+                  setSignError(error.message)
+                  isLoading(false)
         })
     }
     const handleGoogleSign = () => {
@@ -83,10 +86,13 @@ const Register = () => {
                     console.log(data.accessToken);
                     localStorage.setItem("arkDeals", data.accessToken);
                     toast.success("Registration Success as Buyer!");
-                    navigate("/");
+                    navigate(from, { replace: true });
                   });
               }
             });
+        }).catch(err => {
+          console.log(err.message);
+          isLoading(false)
         })
       };
         

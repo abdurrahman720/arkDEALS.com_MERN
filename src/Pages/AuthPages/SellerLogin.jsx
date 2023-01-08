@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const SellerLogin = () => {
-    const { emailSignIn, googleSign } = useContext(AuthContext);
+    const { emailSignIn, googleSign,isLoading } = useContext(AuthContext);
     const navigate = useNavigate()
     const {
         register,
@@ -29,11 +29,12 @@ const SellerLogin = () => {
                                             console.log(data.accessToken);
                                             localStorage.setItem('arkDeals', data.accessToken);
                                             toast.success("Login SuccessFully!")
-                                            navigate('/')
+                                            navigate('/dashboard')
                                     })
     
                 }).catch(err => {
-                setLoginError(err.message)
+                  setLoginError(err.message);
+                  isLoading(false)
             })
         }
     
@@ -63,12 +64,13 @@ const SellerLogin = () => {
                         console.log(data.accessToken);
                         localStorage.setItem("arkDeals", data.accessToken);
                         toast.success("Registration Success as Buyer!");
-                        navigate("/");
+                        navigate("/dashboard");
                       });
                   }
                 });
             }).catch(err => {
-                setLoginError(err.message)
+              setLoginError(err.message)
+              isLoading(false)
             })
           };
         

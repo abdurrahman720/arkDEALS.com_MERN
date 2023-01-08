@@ -1,17 +1,20 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../Context/AuthProvider";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { emailSignIn, googleSign } = useContext(AuthContext);
+  const { emailSignIn, googleSign, isLoading } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || '/'
 
   const [loginError, setLoginError] = useState("");
 
@@ -29,12 +32,12 @@ const Login = () => {
             console.log(data.accessToken);
             localStorage.setItem("arkDeals", data.accessToken);
             toast.success("Login SuccessFully!");
-            navigate("/");
+            navigate(from, {replace: true});
           });
       })
       .catch((err) => {
         setLoginError(err.message);
-        
+        isLoading(false)
       });
   };
 
@@ -69,7 +72,8 @@ const Login = () => {
           }
         });
     }).catch(err => {
-        setLoginError(err.message)
+      setLoginError(err.message);
+      isLoading(false)
     })
   };
 
