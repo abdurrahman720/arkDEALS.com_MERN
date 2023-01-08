@@ -8,9 +8,11 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleLogOut = () => {
     logOut()
       .then(() => {
+        navigate('/')
         toast.info('Logged Out!');
       })
       .catch((err) => {
@@ -18,7 +20,7 @@ const Navbar = () => {
       });
   };
   const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
+ 
  
   const menuItems = (
     <>

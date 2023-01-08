@@ -22,8 +22,12 @@ const Overview = () => {
         return <Loader></Loader>
     }
     return (
-        <div className='text-3xl text-center'>
-            {currentUser.name}
+        <div className='bg-accent text-center max-w-sm mx-auto'>
+            <h3 className="text-xl">{currentUser.name}</h3>
+            <br />
+            <h4 className="text-lg">{currentUser.email}</h4>
+            <br />
+            <h5 className="">{currentUser.role }</h5>
         </div>
     );
 };

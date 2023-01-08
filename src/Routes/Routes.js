@@ -12,6 +12,7 @@ import BuyerRoute from "./BuyerRoute";
 import MyOrders from "../Pages/Dashboard/Buyer/MyOrders";
 import SellerRoute from "./SellerRoute";
 import Overview from "../Pages/Dashboard/OverView/Overview";
+import AddProduct from "../Pages/Dashboard/Seller/AddProduct";
 
 export const router = createBrowserRouter([
     {
@@ -58,12 +59,24 @@ export const router = createBrowserRouter([
                 path: "/dashboard",
                 element:<Overview></Overview>
             },
+            //for buyer
             {
                 path: "/dashboard/myorders",
                 element: <BuyerRoute>
                     <MyOrders></MyOrders>
                 </BuyerRoute>
             },
+            //for seller
+            {
+                path: "/dashboard/myproducts",
+                element: <SellerRoute><MyProducts></MyProducts></SellerRoute>
+            },
+            {
+                path: "/dashboard/addproduct",
+                element: <SellerRoute>
+                    <AddProduct></AddProduct>
+                </SellerRoute>
+            }
            
         ]
     }
