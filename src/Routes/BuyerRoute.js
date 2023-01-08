@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import Loader from '../Components/Loader';
 import { AuthContext } from '../Context/AuthProvider';
 import useBuyer from '../hooks/useBuyer';
 
@@ -8,11 +9,11 @@ const BuyerRoute = ({children}) => {
     const [isBuyer, buyerLoading] = useBuyer(user?.email);
     console.log(loading, buyerLoading)
 
-    if (loading ) {
-        return <>Loading...</>
+    if (loading ||buyerLoading  ) {
+        return <Loader></Loader>
     }
 
-    if (user) {
+    if (user && isBuyer) {
         return children
     }
 
