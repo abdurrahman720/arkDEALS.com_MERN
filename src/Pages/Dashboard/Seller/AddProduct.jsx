@@ -3,12 +3,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Loader from "../../../Components/Loader";
 import { AuthContext } from "../../../Context/AuthProvider";
 
 const AddProduct = () => {
   const { user } = useContext(AuthContext);
   const [categories, setCategories] = useState([]);
-
+  const imgHostKey = process.env.REACT_APP_imgbb_key;
+  const [loading, setLoading] = useState(false);
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`http://localhost:5001/categories`);
@@ -24,8 +27,66 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
     const navigate = useNavigate();
     
     const AddProduct = data => {
-      console.log(data)
+      console.log(data);
+      const img = data.productImage[0];
+      console.log(img);
+      const formData = new FormData();
+      formData.append('image', img);
+      console.log(formData);
+      const url = `https://api.imgbb.com/1/upload?&key=${imgHostKey}`
+      console.log(url)
+      fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(imageData => {
+          setLoading(true)
+          console.log(imageData)
+          if (imageData.success) {
+            console.log(imageData.data.url);
+
+            const product = {
+              sellerName: data.sellerName,
+              sellerEmail: data.sellerEmail,
+              sellerLocation: data.sellerLocation,
+              sellerPhone: data.sellerPhone,
+              categoryName: data.categoryName,
+              productName: data.productName,
+              brand: data.brand,
+              resalePrice: data.resalePrice,
+              originalPrice: data.originalPrice,
+              yearOfPurchase: data.yrOfpurchase,
+              condition: data.condition,
+              productDescription: data.description,
+              productImage: imageData.data.url
+            }
+            //post this product on database
+            fetch(`http://localhost:5001/add-product`, {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+              },
+              body: JSON.stringify(product)
+            })
+              .then(res => res.json())
+              .then(data => {
+                setLoading(false)
+                console.log(data);
+                if (data.acknowledged) {
+                  toast.success("Your Product is on Live!");
+                  navigate('/dashboard/myproducts');
+              }
+            })
+          }
+      })
+
       
+      
+    }
+  if (loading) {
+    return <Loader></Loader>
   }
 
 
@@ -224,7 +285,7 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
             type="file"
             className="input input-bordered"
             {...register("productImage", { required: "photo is required" })}
-            placeholder="Full Name"
+            placeholder=""
           />
           {errors.productImage && (
             <p className="text-red-600" role="alert">
