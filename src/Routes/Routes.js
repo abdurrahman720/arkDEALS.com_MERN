@@ -11,6 +11,7 @@ import MyProducts from "../Pages/Dashboard/Seller/MyProducts"
 import BuyerRoute from "./BuyerRoute";
 import MyOrders from "../Pages/Dashboard/Buyer/MyOrders";
 import SellerRoute from "./SellerRoute";
+import Overview from "../Pages/Dashboard/OverView/Overview";
 
 export const router = createBrowserRouter([
     {
@@ -55,10 +56,10 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/dashboard",
-                element:<SellerRoute><MyProducts></MyProducts></SellerRoute>
+                element:<Overview></Overview>
             },
             {
-                path: "/dashboard",
+                path: "/dashboard/myorders",
                 element: <BuyerRoute>
                     <MyOrders></MyOrders>
                 </BuyerRoute>

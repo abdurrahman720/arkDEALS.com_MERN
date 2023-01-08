@@ -2,8 +2,9 @@ import React from 'react';
 
 const Loader = () => {
     return (
-        <div className="">
-            <progress className="progress w-56 mx-auto"></progress>
+        <div className="flex flex-col items-center justify-center">
+            <div>{ ' '}</div>
+            <progress className="progress w-full"></progress>
         </div>
     );
 };
