@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import MyProductsTable from "../../../Components/MyProductsTable";
 
@@ -7,7 +8,30 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
-  const [slideID, setSlideid] = useState(1);
+
+  const [slideID, setSlideid] = useState();
+
+  const fetchData = async() => {
+    const res = await axios.get(`http://localhost:5001/get-advertisement-sort`)
+    const data = res.data;
+    console.log("ads",data)
+        if (data.length === 0) {
+          let id = 1;
+         return setSlideid(id)
+        }
+        console.log("clg next", data[0]?.next);
+        let id = data[0]?.next;
+        
+        setSlideid(id)
+  }
+
+  useEffect(() => {
+    fetchData()
+    },[])
+
+
+  console.log(slideID)
+
   const { data: products = [], refetch } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
@@ -23,19 +47,24 @@ const MyProducts = () => {
       return data;
     },
   });
-  
+
+ 
   const handleAdvertise = (product) => {
     console.log(product);
-    
+   
     const next = slideID + 1;
     const prev = slideID - 1;
+   
     
     const advertiseProduct = {
       product,
       sID: slideID,
       next,
-      prev
+      prev,
+      date: new Date()
     }
+  console.log(slideID,next,prev,advertiseProduct);
+    
     fetch(`http://localhost:5001/post-advertisemnet`, {
       method: 'POST',
       headers: {
@@ -47,16 +76,17 @@ const MyProducts = () => {
       .then(res => res.json())
       .then(data => {
         if (data.acknowledged) {
-          console.log(next);
-          setSlideid(next)
+          
+         
           fetch(`http://localhost:5001/advertisement-status/${product._id}`, {
             method: 'PATCH',
           })
             .then(res => res.json())
             .then(data => {
-              console.log(data)
-              refetch();
-              toast.success('Product is now on live!')
+              console.log(data);
+              refetch()
+              fetchData();
+              toast.success('Product is now on Advertisement')
           })
        }
     })
