@@ -14,12 +14,12 @@ const MyProducts = () => {
   const fetchData = async() => {
     const res = await axios.get(`http://localhost:5001/get-advertisement-sort`)
     const data = res.data;
-    console.log("ads",data)
+
         if (data.length === 0) {
           let id = 1;
          return setSlideid(id)
         }
-        console.log("clg next", data[0]?.next);
+
         let id = data[0]?.next;
         
         setSlideid(id)
@@ -30,7 +30,7 @@ const MyProducts = () => {
     },[])
 
 
-  console.log(slideID)
+
 
   const { data: products = [], refetch } = useQuery({
     queryKey: ["products"],
@@ -57,6 +57,7 @@ const MyProducts = () => {
    
     
     const advertiseProduct = {
+      id: product._id,
       product,
       sID: slideID,
       next,
@@ -93,7 +94,25 @@ const MyProducts = () => {
   }
  
   const handleRemoveAdvertise = (id) => {
-    
+    fetch(`http://localhost:5001/delete-advertisement/${id}`, {
+      method: 'DELETE',
+     
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.deletedCount === 1) {
+          fetch(`http://localhost:5001/advertisement-status/${id}`, {
+            method: 'PATCH',
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+              refetch()
+              fetchData();
+              toast.warning('Product is removed from Advertisement')
+          })
+        }
+    })
   }
 
   return (
