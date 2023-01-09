@@ -28,7 +28,8 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
 
     const navigate = useNavigate();
     
-    const AddProduct = data => {
+  const AddProduct = data => {
+    setLoading(true)
       console.log(data);
       const img = data.productImage[0];
       console.log(img);
@@ -43,7 +44,7 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
       })
         .then(res => res.json())
         .then(imageData => {
-          setLoading(true)
+         
           console.log(imageData)
           if (imageData.success) {
             console.log(imageData.data.url);
@@ -62,7 +63,10 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
               condition: data.condition,
               productDescription: data.description,
               productImage: imageData.data.url,
-              timeOfPost: date.format('D/MM/YYYY')
+              timeOfPost: date.format('D/MM/YYYY'),
+              advertised: false,
+              reported: false,
+              sold: false
             }
             //post this product on database
             fetch(`http://localhost:5001/add-product`, {

@@ -9,7 +9,7 @@ function App() {
     <div className="max-w-[1240px] mx-auto font-custom1">
       <RouterProvider router={router}></RouterProvider>
       <ToastContainer
-position="bottom-center"
+position="top-center"
 autoClose={1997}
 hideProgressBar={false}
 newestOnTop={false}
