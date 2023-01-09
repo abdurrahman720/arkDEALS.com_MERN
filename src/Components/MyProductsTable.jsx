@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const MyProductsTable = ({product,i,confirmationModal}) => {
+const MyProductsTable = ({product,i,confirmationModal, handleAdvertise,handleRemoveAdvertise}) => {
 
     const navigate = useNavigate()
     return (
@@ -36,15 +36,16 @@ const MyProductsTable = ({product,i,confirmationModal}) => {
           {
             product.sold ?  <span className="badge badge-ghost badge-sm font-custom2">Sold</span> : <span className="badge badge-ghost badge-sm font-custom2">UnSold</span>
             }
+        </td>
+        <td>
+          {
+            product.advertised===true ?  <button onClick={()=> handleRemoveAdvertise(product._id)} className="btn btn-xs">Remove</button> :  <button onClick={()=> handleAdvertise(product)}  className="btn btn-xs">Add</button>
+           }
           </td>
           <td>
             <button onClick={()=>navigate(`/browse/product/${product._id}`)} className="btn btn-xs">details</button>
           </td>
-          <td>
-          {
-            product.advertied ?  <button  className="btn btn-xs">UnAdvertise</button> :  <button  className="btn btn-xs">Advertise</button>
-           }
-          </td>
+          
           <td>
           <label onClick={()=>confirmationModal(product)} htmlFor="confirmation-modal" className="btn btn-error btn-xs">Delete</label>
           </td>

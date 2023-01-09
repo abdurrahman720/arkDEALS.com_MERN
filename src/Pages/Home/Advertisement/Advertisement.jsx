@@ -7,7 +7,7 @@ const Advertisement = () => {
     <div className="bg-base-200">
       <h2 className="text-center text-3xl pt-20">Todays Advertised Top Laptops</h2>
       <div className="carousel w-full bg-base-200 ">
-        <AdvertisementCard></AdvertisementCard>
+        {/* <AdvertisementCard></AdvertisementCard> */}
       </div>
     </div>
   );

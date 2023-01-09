@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import MyProductsTable from "../../../Components/MyProductsTable";
 
 import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
+  const [slideID, setSlideid] = useState(1);
   const { data: products = [], refetch } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
@@ -21,7 +23,49 @@ const MyProducts = () => {
       return data;
     },
   });
-  console.log(products);
+  
+  const handleAdvertise = (product) => {
+    console.log(product);
+    
+    const next = slideID + 1;
+    const prev = slideID - 1;
+    
+    const advertiseProduct = {
+      product,
+      sID: slideID,
+      next,
+      prev
+    }
+    fetch(`http://localhost:5001/post-advertisemnet`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+      },
+      body: JSON.stringify(advertiseProduct)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.acknowledged) {
+          console.log(next);
+          setSlideid(next)
+          fetch(`http://localhost:5001/advertisement-status/${product._id}`, {
+            method: 'PATCH',
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data)
+              refetch();
+              toast.success('Product is now on live!')
+          })
+       }
+    })
+  }
+ 
+  const handleRemoveAdvertise = (id) => {
+    
+  }
+
   return (
     <div className="bg-base-100">
       <h2 className="text-center text-xl">My Products</h2>
@@ -33,14 +77,14 @@ const MyProducts = () => {
               <th>Laptop</th>
               <th>Price</th>
               <th>Status</th>
-              <th></th>
+              <th>Advertisement</th>
               <th></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
                       {
-                          products.map((product,i) =><MyProductsTable key={product._id} product={product} i={i}></MyProductsTable>)
+                          products.map((product,i) =><MyProductsTable key={product._id} product={product} i={i} handleAdvertise={handleAdvertise} handleRemoveAdvertise={handleRemoveAdvertise}></MyProductsTable>)
            }
           </tbody>
         </table>
