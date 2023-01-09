@@ -15,7 +15,7 @@ const BrowseCard = ({ product }) => {
     yearOfPurchase,
     condition,
     productImage,
-    productDescription,
+   
       timeOfPost,
   } = product;
     console.log(timeOfPost)

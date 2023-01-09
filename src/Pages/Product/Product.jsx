@@ -17,7 +17,7 @@ const [isLoading, setIsLoading] = useState(false)
     const [isBooking, setIsBooking] = useState(null)
   const {
       sellerName,
-
+    sellerEmail,
     sellerLocation,
     categoryName,
     productName,
