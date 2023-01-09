@@ -17,6 +17,7 @@ import PrivateRoute from "./PrivateRoute";
 import BrowseLayout from "../Layout/BrowseLayout/BrowseLayout";
 import Browse from "../Pages/Browse/Browse";
 import BrowseByCate from "../Pages/Browse/BrowseByCate";
+import Product from "../Pages/Product/Product";
 
 
 export const router = createBrowserRouter([
@@ -44,6 +45,11 @@ export const router = createBrowserRouter([
                         path: `/browse/category/:id`,
                         loader: ({ params }) => fetch(`http://localhost:5001/productsByCategory/${params.id}`),
                         element: <BrowseByCate></BrowseByCate>
+                    },
+                    {
+                        path: `/browse/product/:id`,
+                        loader: ({ params }) => fetch(`http://localhost:5001/product/${params.id}`),
+                        element: <Product></Product>
                     }
 
                 ]

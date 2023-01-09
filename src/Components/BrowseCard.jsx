@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const BrowseCard = ({ product }) => {
+    const navigate = useNavigate()
   const {
     _id,
     sellerName,
@@ -13,7 +15,7 @@ const BrowseCard = ({ product }) => {
     yearOfPurchase,
     condition,
     productImage,
-      productDescription,
+    productDescription,
       timeOfPost,
   } = product;
     console.log(timeOfPost)
@@ -41,7 +43,7 @@ const BrowseCard = ({ product }) => {
           <div className="badge badge-outline">{timeOfPost}</div>
         </div>
         <div className="card-actions justify-center mt-2">
-          <button className="btn btn-outline btn-primary">View Item</button>
+          <button onClick={()=>navigate(`/browse/product/${_id}`)} className="btn btn-outline btn-primary">View Item</button>
         </div>
       </div>
     </div>
