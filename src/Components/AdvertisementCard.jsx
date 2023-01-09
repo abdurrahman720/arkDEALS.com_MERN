@@ -1,17 +1,30 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AdvertisementCard = ({ ad }) => {
   const { sID, next, prev, product } = ad;
-  const {productImage, productName, sellerName, sellerlocation} = product;
+  const navigate = useNavigate()
+  const {_id,productImage, productName, sellerName, sellerlocation, brand, categoryName, resalePrice} = product;
     return (
         <div id={`slide${sID}`} className="carousel-item relative w-full">
-        <div className="card mx-auto md:card-side bg-base-200 shadow-xl mt-10">
-    <figure><img src={productImage} alt="Album"/></figure>
-    <div className="card-body">
-            <h2 className="card-title">{productName }</h2>
-      <p>Click the button to listen on Spotiwhy app.</p>
+        <div className="card mx-auto md:card-side bg-base-200 shadow-2xl  m-10">
+    <figure><img className='' src={productImage} alt="Album"/></figure>
+    <div className="card-body w-full">
+            <h2 className="card-title text-3xl">{productName}
+              <div className="badge badge-secondary">${resalePrice }</div>
+            </h2>
+           
+            <p className="font-custom2">{categoryName}
+              <br />
+              Brand: {brand}
+              <br />
+              Seller: {sellerName}
+              <br />
+              Location: {sellerlocation}
+            </p>
+         
       <div className="card-actions justify-end">
-        <button className="btn btn-primary">Listen</button>
+        <button onClick={()=>navigate(`/browse/product/${_id}`)} className="btn btn-primary">Details</button>
       </div>
     </div>
   </div>

@@ -64,9 +64,9 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/blog",
-                element: <PrivateRoute>
+                element: 
                     <Blog></Blog>
-                </PrivateRoute>
+               
             },
             {
                 path: "/seller-login",

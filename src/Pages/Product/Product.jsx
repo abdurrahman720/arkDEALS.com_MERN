@@ -42,7 +42,8 @@ const [isLoading, setIsLoading] = useState(false)
         const phone = form.phone.value;
         const location = form.location.value;
         // console.log(phone, location);
-        const order = {
+      const order = {
+            pId: product._id,
             buyerName: user?.displayName,
             buyerEmail: user?.email,
             buyerPhone: phone,

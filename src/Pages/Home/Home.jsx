@@ -14,12 +14,15 @@ const Home = () => {
             return data;
         }
     })
+    console.log(ads);
 
     return (
         <div>
             <Banner></Banner>
             <Categories></Categories>
-            <Advertisement ads={ads}></Advertisement>
+            {
+                ads?.length>=1 && <Advertisement ads={ads}></Advertisement>
+            }
         </div>
     );
 };

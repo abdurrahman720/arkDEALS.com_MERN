@@ -50,7 +50,9 @@ const MyOrdersTable = ({ order,i , confirmationModal}) => {
             <button onClick={()=>navigate(`/browse/product/${product._id}`)} className="btn btn-xs">details</button>
           </td>
           <td>
-          <label onClick={()=>confirmationModal(order)} htmlFor="confirmation-modal" className="btn btn-accent btn-xs">Pay</label>
+          {
+            order?.paid===true ? <span className="badge badge-ghost badge-sm font-custom2">Paid</span>  : <label onClick={()=>confirmationModal(order)} htmlFor="confirmation-modal" className="btn btn-accent btn-xs">Pay</label>
+         }
           </td>
         </tr>
            

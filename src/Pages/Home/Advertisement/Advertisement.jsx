@@ -1,6 +1,6 @@
 import React from "react";
 import AdvertisementCard from "../../../Components/AdvertisementCard";
-import AdvertiseCard from "./AdvertiseCard";
+
 
 const Advertisement = ({ ads }) => {
   

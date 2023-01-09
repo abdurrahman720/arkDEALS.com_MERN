@@ -34,12 +34,12 @@ const MyProductsTable = ({product,i,confirmationModal, handleAdvertise,handleRem
           </td>
         <td>
           {
-            product.sold ?  <span className="badge badge-ghost badge-sm font-custom2">Sold</span> : <span className="badge badge-ghost badge-sm font-custom2">UnSold</span>
+            product.sold===true ?  <span className="badge badge-ghost badge-sm font-custom2">Sold</span> : <span className="badge badge-ghost badge-sm font-custom2">UnSold</span>
             }
         </td>
         <td>
           {
-            product.advertised===true ?  <button onClick={()=> handleRemoveAdvertise(product._id)} className="btn btn-xs">Remove</button> :  <button onClick={()=> handleAdvertise(product)}  className="btn btn-xs">Add</button>
+            product.advertised===true ?  <button onClick={()=> handleRemoveAdvertise(product._id)} className="btn btn-xs">Remove</button> :  <button disabled={product.sold} onClick={()=> handleAdvertise(product)}  className="btn btn-xs">Add</button>
            }
           </td>
           <td>
