@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
 import ConfirmationModal from "../../../Components/ConfirmationModal";
-import MyOrderData from "../../../Components/MyOrderData";
+import MyOrdersTable from "../../../Components/MyOrdersTable";
 import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyOrders = () => {
   const { user } = useContext(AuthContext);
-    const[payOrder,setPayOrder] = useState(null)
+  const [payOrder, setPayOrder] = useState(null);
   const { data: orders = [], refetch } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5001/orders?email=${user?.email}`,
+        `http://localhost:5001/myorders?email=${user?.email}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
@@ -22,18 +22,17 @@ const MyOrders = () => {
       return data;
     },
   });
-    
-    const confirmationModal = (order) => {
-        setPayOrder(order);
-    }
-    const handlePay = (order) => {
-        console.log(order);
 
-    }
-  
-    const closeModal = () => {
-        setPayOrder(null)
-    }
+  const confirmationModal = (order) => {
+    setPayOrder(order);
+  };
+  const handlePay = (order) => {
+    console.log(order);
+  };
+
+  const closeModal = () => {
+    setPayOrder(null);
+  };
 
   return (
     <div>
@@ -52,24 +51,28 @@ const MyOrders = () => {
               </tr>
             </thead>
             <tbody>
-                          {orders.map((order, i) => (
-                  <MyOrderData key={order._id} order={order} confirmationModal={confirmationModal} i={i}></MyOrderData>
-                
+              {orders.map((order, i) => (
+                <MyOrdersTable
+                  key={order._id}
+                  order={order}
+                  confirmationModal={confirmationModal}
+                  i={i}
+                ></MyOrdersTable>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-          {
-              payOrder &&
-              <ConfirmationModal
-              title={`Payment for ${payOrder.product.productName}`}
-              message={`Your are going to pay $ ${payOrder.product.resalePrice}`}
-              successAction = {handlePay}
-              successButtonName="Pay"
-              modalData = {payOrder}
-              closeModal = {closeModal}></ConfirmationModal>
-         }
+      {payOrder && (
+        <ConfirmationModal
+          title={`Payment for ${payOrder.product.productName}`}
+          message={`Your are going to pay $ ${payOrder.product.resalePrice}`}
+          successAction={handlePay}
+          successButtonName="Pay"
+          modalData={payOrder}
+          closeModal={closeModal}
+        ></ConfirmationModal>
+      )}
     </div>
   );
 };

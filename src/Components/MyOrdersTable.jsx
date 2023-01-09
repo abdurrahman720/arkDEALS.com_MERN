@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from './ConfirmationModal';
 
-const MyOrderData = ({ order,i , confirmationModal}) => {
+
+const MyOrdersTable = ({ order,i , confirmationModal}) => {
     const { product } = order;
     const navigate = useNavigate()
     return (
@@ -60,4 +60,4 @@ const MyOrderData = ({ order,i , confirmationModal}) => {
     );
 };
 
-export default MyOrderData;
+export default MyOrdersTable;
