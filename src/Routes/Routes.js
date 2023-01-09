@@ -14,6 +14,10 @@ import SellerRoute from "./SellerRoute";
 import Overview from "../Pages/Dashboard/OverView/Overview";
 import AddProduct from "../Pages/Dashboard/Seller/AddProduct";
 import PrivateRoute from "./PrivateRoute";
+import BrowseLayout from "../Layout/BrowseLayout/BrowseLayout";
+import Browse from "../Pages/Browse/Browse";
+import BrowseByCate from "../Pages/Browse/BrowseByCate";
+
 
 export const router = createBrowserRouter([
     {
@@ -27,6 +31,22 @@ export const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <Home></Home>
+            },
+            {
+                path: "/browse",
+                element: <BrowseLayout></BrowseLayout>,
+                children: [
+                    {
+                        path: '/browse',
+                        element: <Browse></Browse>
+                    },
+                    {
+                        path: `/browse/category/:id`,
+                        loader: ({ params }) => fetch(`http://localhost:5001/productsByCategory/${params.id}`),
+                        element: <BrowseByCate></BrowseByCate>
+                    }
+
+                ]
             },
             {
                 path: "/login",

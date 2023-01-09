@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -21,6 +22,7 @@ const AddProduct = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+const date  = moment()
 
 const {register, handleSubmit,  formState: { errors },} = useForm()
 
@@ -59,7 +61,8 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
               yearOfPurchase: data.yrOfpurchase,
               condition: data.condition,
               productDescription: data.description,
-              productImage: imageData.data.url
+              productImage: imageData.data.url,
+              timeOfPost: date.format('D/MM/YYYY')
             }
             //post this product on database
             fetch(`http://localhost:5001/add-product`, {
@@ -165,7 +168,7 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
             {...register("categoryName", { required: true })}
           >
             {categories.map((category) => (
-              <option key={category._id}>{category.category}</option>
+              <option key={category._id}>{category.categoryName}</option>
             ))}
           </select>
         </div>
