@@ -39,11 +39,11 @@ const MyProductsTable = ({product,i,confirmationModal, handleAdvertise,handleRem
         </td>
         <td>
           {
-            product.advertised===true ?  <button onClick={()=> handleRemoveAdvertise(product._id)} className="btn btn-xs">Remove</button> :  <button disabled={product.sold} onClick={()=> handleAdvertise(product)}  className="btn btn-xs">Add</button>
+            product.advertised===true ?  <button onClick={()=> handleRemoveAdvertise(product._id)} className="btn btn-warning btn-xs">Remove</button> :  <button disabled={product.sold} onClick={()=> handleAdvertise(product)}  className="btn btn-accent btn-xs">Add</button>
            }
           </td>
           <td>
-            <button onClick={()=>navigate(`/browse/product/${product._id}`)} className="btn btn-xs">details</button>
+            <button onClick={()=>navigate(`/browse/product/${product._id}`)} className="btn btn-accent btn-xs">details</button>
           </td>
           
           <td>

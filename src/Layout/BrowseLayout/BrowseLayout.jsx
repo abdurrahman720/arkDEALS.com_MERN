@@ -44,7 +44,7 @@ const BrowseLayout = () => {
            }
             
           </select>
-        <input className="btn" type="submit" value="go" />
+        <input className="btn btn-accent" type="submit" value="go" />
         </div>
       </div>
           </form>

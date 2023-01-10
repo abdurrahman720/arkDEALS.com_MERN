@@ -83,9 +83,9 @@ const Navbar = () => {
         {user?.email ? (
           <>
             
-            <label htmlFor="dashboard-drawer" className="btn  drawer-button md:hidden">Dashboard</label>
+            <label htmlFor="dashboard-drawer" className="btn btn-accent drawer-button md:hidden">Dashboard</label>
             
-            <Link to='/dashboard' className="btn hidden md:flex">Dashboard</Link>
+            <Link to='/dashboard' className="btn btn-accent hidden md:flex">Dashboard</Link>
 
             <Link onClick={handleLogOut} className="ml-2 ">
               <FiLogOut className="" />

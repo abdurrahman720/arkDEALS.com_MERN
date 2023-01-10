@@ -2,13 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import ConfirmationModal from "../../../Components/ConfirmationModal";
 import MyProductsTable from "../../../Components/MyProductsTable";
 
 import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
-
+  const [deletingProduct, setDeletingProduct] = useState(null)
   const [slideID, setSlideid] = useState();
 
   const fetchData = async() => {
@@ -115,6 +116,45 @@ const MyProducts = () => {
     })
   }
 
+  const confirmationModal = (product) => {
+    setDeletingProduct(product)
+  }
+
+  const handleDelete = (product) => {
+    console.log(product);
+    if (product.advertised===true) {
+      fetch(`http://localhost:5001/delete-advertisement/${product._id}`, {
+      method: 'DELETE',
+     
+    })
+        .then(res => res.json())
+        .then(data => {
+          if (data.deletedCount>=1) {
+            refetch()
+            fetchData()
+            toast.warning('Product is removed from Advertisement')
+        }
+      })
+    }
+    fetch(`http://localhost:5001/delete-product/${product._id}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.deletedCount === 1) {
+          refetch()
+          toast.warning('Product deleted successfully!')
+        }
+    })
+  }
+
+  const closeModal = () => {
+    setDeletingProduct(null)
+  }
+
   return (
     <div className="bg-base-100">
       <h2 className="text-center text-xl">My Products</h2>
@@ -133,10 +173,20 @@ const MyProducts = () => {
           </thead>
           <tbody>
                       {
-                          products.map((product,i) =><MyProductsTable key={product._id} product={product} i={i} handleAdvertise={handleAdvertise} handleRemoveAdvertise={handleRemoveAdvertise}></MyProductsTable>)
+                          products.map((product,i) =><MyProductsTable key={product._id} product={product} i={i} handleAdvertise={handleAdvertise} handleRemoveAdvertise={handleRemoveAdvertise} confirmationModal={confirmationModal}></MyProductsTable>)
            }
           </tbody>
         </table>
+        {deletingProduct && (
+        <ConfirmationModal
+          title={`Are your sure to delete ${deletingProduct.productName}`}
+          message={`This operation can not be undone`}
+          successAction={handleDelete}
+          successButtonName="Confirm Delete"
+          modalData={deletingProduct}
+          closeModal={closeModal}
+        ></ConfirmationModal>
+      )}
       </div>
     </div>
   );
