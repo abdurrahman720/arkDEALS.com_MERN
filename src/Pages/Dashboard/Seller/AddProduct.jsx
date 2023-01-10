@@ -2,6 +2,7 @@ import axios from "axios";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -14,6 +15,17 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const imgHostKey = process.env.REACT_APP_imgbb_key;
   const [loading, setLoading] = useState(false);
+
+    const { data: isVerified } = useQuery({
+    queryKey: ['isVerified'],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5001/seller-verified/${user?.email}`)
+      const data = await res.json();
+  
+      return data.isverified
+    }
+  })
+
 
 
   const fetchCategories = async () => {
@@ -77,7 +89,7 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
               advertised: false,
               reported: false,
               sold: false,
-
+              verified: isVerified
             }
             //post this product on database
             fetch(`http://localhost:5001/add-product`, {

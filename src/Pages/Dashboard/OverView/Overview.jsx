@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useContext } from 'react';
 import Loader from '../../../Components/Loader';
 import { AuthContext } from '../../../Context/AuthProvider';
-import useSeller from '../../../hooks/useSeller';
+
 
 const Overview = () => {
     const { user } = useContext(AuthContext);
-    const [isVerified,sellerLoading] = useSeller(user?.email)
+   
     const { data:currentUser, isLoading } = useQuery({
         queryKey: ['currentUser'],
         queryFn: async () => {
@@ -20,8 +20,8 @@ const Overview = () => {
         }
     })
     console.log(currentUser);
-    console.log(isVerified);
-    if (isLoading || sellerLoading) {
+
+    if (isLoading ) {
         return <Loader></Loader>
     }
     return (

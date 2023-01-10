@@ -6,6 +6,8 @@ import Loader from "../../Components/Loader";
 import { AuthContext } from "../../Context/AuthProvider";
 import useAdmin from "../../hooks/useAdmin";
 import useSeller from "../../hooks/useSeller";
+import { TiTick } from 'react-icons/ti';
+
 
 const Product = () => {
     const product = useLoaderData();
@@ -29,9 +31,14 @@ const [isLoading, setIsLoading] = useState(false)
     productImage,
     productDescription,
     timeOfPost,
+    verified,
   } = product;
 
-  const [isVerified] = useSeller(sellerEmail)
+
+
+
+
+  // console.log(isVerified);
     
     const bookNowModal = (product) => {
         setIsBooking(product)
@@ -87,8 +94,8 @@ const [isLoading, setIsLoading] = useState(false)
       </p>
       <p className="text-lg font-bold text-center">Seller: {sellerName}
         {
-          isVerified && <div className="badge">
-            
+          verified && <div className="badge">
+            <TiTick></TiTick>
           </div>
         }
       </p>
