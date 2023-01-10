@@ -10,19 +10,27 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const AddProduct = () => {
   const { user } = useContext(AuthContext);
+
   const [categories, setCategories] = useState([]);
   const imgHostKey = process.env.REACT_APP_imgbb_key;
   const [loading, setLoading] = useState(false);
+
+
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`http://localhost:5001/categories`);
       setCategories(res.data);
     } catch {}
   };
+
   useEffect(() => {
     fetchCategories();
+    
   }, []);
-const date  = moment()
+
+
+  const date = moment();
+
 
 const {register, handleSubmit,  formState: { errors },} = useForm()
 
@@ -54,6 +62,7 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
               sellerEmail: data.sellerEmail,
               sellerLocation: data.sellerLocation,
               sellerPhone: data.sellerPhone,
+     
               categoryName: data.categoryName,
               productName: data.productName,
               brand: data.brand,
@@ -64,9 +73,11 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
               productDescription: data.description,
               productImage: imageData.data.url,
               timeOfPost: date.format('D/MM/YYYY'),
+              timeStamp: new Date(),
               advertised: false,
               reported: false,
-              sold: false
+              sold: false,
+
             }
             //post this product on database
             fetch(`http://localhost:5001/add-product`, {

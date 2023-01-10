@@ -18,6 +18,10 @@ import BrowseLayout from "../Layout/BrowseLayout/BrowseLayout";
 import Browse from "../Pages/Browse/Browse";
 import BrowseByCate from "../Pages/Browse/BrowseByCate";
 import Product from "../Pages/Product/Product";
+import AdminRoute from "./AdminRoute";
+import Allselller from "../Pages/Dashboard/Admin/Allselller";
+import Allbuyer from "../Pages/Dashboard/Admin/Allbuyer";
+import Reported from "../Pages/Dashboard/Admin/Reported";
 
 
 export const router = createBrowserRouter([
@@ -105,6 +109,25 @@ export const router = createBrowserRouter([
                 element: <SellerRoute>
                     <AddProduct></AddProduct>
                 </SellerRoute>
+            },
+            //for admin
+            {
+                path: "/dashboard/allseller",
+                element: <AdminRoute>
+                    <Allselller></Allselller>
+                </AdminRoute>
+            },
+            {
+                path: "/dashboard/allbuyer",
+                element: <AdminRoute>
+                    <Allbuyer></Allbuyer>
+                </AdminRoute>
+            },
+            {
+                path: '/dashboard/reportedproducts',
+                element: <AdminRoute>
+                    <Reported></Reported>
+                </AdminRoute>
             }
            
         ]

@@ -30,6 +30,8 @@ const [isLoading, setIsLoading] = useState(false)
     productDescription,
     timeOfPost,
   } = product;
+
+  const [isVerified] = useSeller(sellerEmail)
     
     const bookNowModal = (product) => {
         setIsBooking(product)
@@ -83,7 +85,13 @@ const [isLoading, setIsLoading] = useState(false)
       <p className="text-2xl font-bold text-center font-custom2">
         <span className="bg-white">Price: ${resalePrice}</span>
       </p>
-      <p className="text-lg font-bold text-center">Seller: {sellerName}</p>
+      <p className="text-lg font-bold text-center">Seller: {sellerName}
+        {
+          isVerified && <div className="badge">
+            
+          </div>
+        }
+      </p>
       <p className="text-lg font-bold  text-center">
         Location: {sellerLocation}
       </p>
