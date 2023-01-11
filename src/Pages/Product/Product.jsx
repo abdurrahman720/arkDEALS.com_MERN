@@ -96,6 +96,8 @@ const [isLoading, setIsLoading] = useState(false)
     const repItem = {
       pID: _id,
       seller: sellerEmail,
+      reporterName: user?.displayName,
+      reporterEmail: user?.email,
       message: message,
       product
     }
