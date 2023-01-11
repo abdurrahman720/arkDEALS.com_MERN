@@ -28,7 +28,8 @@ const SellerRegister = () => {
                           const user = {
                               name: data.name,
                               email: data.email,
-                              role: 'seller'
+                            role: 'seller',
+                              verified: false
                           }
                           fetch(`http://localhost:5001/add-users`, {
                               method: 'POST',

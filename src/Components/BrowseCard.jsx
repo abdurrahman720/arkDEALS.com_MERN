@@ -8,7 +8,6 @@ const BrowseCard = ({ product }) => {
   const {
     _id,
     sellerName,
-    sellerEmail,
     sellerLocation,
     categoryName,
     productName,

@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TiTick } from 'react-icons/ti';
 
 const AdvertisementCard = ({ ad }) => {
-  const { sID, next, prev, product } = ad;
+  const { sID, next, prev, product, verified } = ad;
+
   const navigate = useNavigate()
   const {_id,productImage, productName, sellerName, sellerlocation, brand, categoryName, resalePrice} = product;
     return (
@@ -18,7 +20,11 @@ const AdvertisementCard = ({ ad }) => {
               <br />
               Brand: {brand}
               <br />
-              Seller: {sellerName}
+              Seller: {sellerName} {
+          verified===true && <div className="badge">
+            <TiTick></TiTick>
+          </div>
+        }
               <br />
               Location: {sellerlocation}
             </p>

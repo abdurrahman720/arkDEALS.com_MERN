@@ -22,12 +22,14 @@ import AdminRoute from "./AdminRoute";
 import Allselller from "../Pages/Dashboard/Admin/Allselller";
 import Allbuyer from "../Pages/Dashboard/Admin/Allbuyer";
 import Reported from "../Pages/Dashboard/Admin/Reported";
+import ErrorPage from "../Pages/Error/ErrorPage";
 
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Main></Main>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: "/",

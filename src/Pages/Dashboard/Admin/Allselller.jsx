@@ -1,10 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import AllsellerTable from '../../../Components/AllsellerTable';
 import ConfirmationModal from '../../../Components/ConfirmationModal';
 
 const Allselller = () => {
-    const [deletingSeller,setDeletingSeller] = useState(null)
+    const [deletingSeller, setDeletingSeller] = useState(null);
+    const [ads,setAds] = useState([])
     const { data: sellers = [], refetch } = useQuery({
         queryKey: ['sellers'],
         queryFn: async () => {
@@ -18,6 +21,16 @@ const Allselller = () => {
         }
     })
 
+    const fetchData = async() => {
+        const res = await axios.get(`http://localhost:5001/get-advertisement-sort`)
+        const data = res.data;
+       setAds(data)
+           
+      }
+      useEffect(() => {
+        fetchData()
+        },[])
+
     const confirmationModal = (user) => {
         setDeletingSeller(user)
     console.log(user);
@@ -25,6 +38,47 @@ const Allselller = () => {
 
     const hadnleVerify = (user) => {
         console.log(user);
+        if (ads.length >= 1) {
+            fetch(`http://localhost:5001/verify-ad/${user?.email}`, {
+                method: 'PATCH'
+            })
+                .then(res => res.json())
+                .then(data => {
+                console.log(data);
+            })
+        }
+
+        fetch(`http://localhost:5001/verify-seller/${user?._id}`, {
+            method: 'PATCH',
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                refetch()
+                fetch(`http://localhost:5001/verify-product/${user?.email}`, {
+                    method: 'PATCH'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        refetch();
+                        if (user.verified === false) {
+                            toast.success("Verified")
+                        }
+                        if (user.verified === true) {
+                           toast.warning("Unverified")
+                       }
+                    })
+                
+            })
+            .catch(err => {
+            console.log(err)
+        })
+        
+        
+       
+
+        
     }
 
     const handleDelete = (user) => {

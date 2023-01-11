@@ -12,6 +12,16 @@ const MyProducts = () => {
   const [deletingProduct, setDeletingProduct] = useState(null)
   const [slideID, setSlideid] = useState();
 
+  const { data: isVerified } = useQuery({
+    queryKey: ['isVerified'],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5001/seller-verified/${user?.email}`)
+      const data = await res.json();
+  
+      return data.isverified
+    }
+  })
+
   const fetchData = async() => {
     const res = await axios.get(`http://localhost:5001/get-advertisement-sort`)
     const data = res.data;
@@ -63,7 +73,9 @@ const MyProducts = () => {
       sID: slideID,
       next,
       prev,
-      date: new Date()
+      date: new Date(),
+      verified: isVerified,
+      seller: product.sellerEmail
     }
   console.log(slideID,next,prev,advertiseProduct);
     
