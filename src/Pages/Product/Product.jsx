@@ -65,7 +65,8 @@ const [isLoading, setIsLoading] = useState(false)
         fetch(`http://localhost:5001/orders`, {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+              'content-type': 'application/json',
+              authorization: `Bearer ${localStorage.getItem('arkDeals')}`
             },
             body: JSON.stringify(order)
         })

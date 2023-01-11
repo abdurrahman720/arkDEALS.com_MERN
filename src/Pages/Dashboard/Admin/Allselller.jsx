@@ -120,7 +120,8 @@ const Allselller = () => {
                                     .then(data => {
                                         console.log(data)
                                         refetch();
-                                        toast.success("User has been deleted successfully")
+                                        toast.success("User has been deleted successfully");
+                                        toast.warn("Don't forget to delete this user from Firebase!")
                                         
                                 })
                         })

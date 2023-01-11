@@ -30,7 +30,7 @@ const MyOrders = () => {
 
   const handlePay = (order) => {
     console.log(order);
-    fetch(`http://localhost:5001/orders-paid/${order.pId}`, {
+    fetch(`http://localhost:5001/orders-paid/${order._id}`, {
        method: 'PATCH'
     })
       .then(res => res.json())
@@ -78,8 +78,8 @@ const MyOrders = () => {
                 <th>Laptop</th>
                 <th>Seller Details</th>
                 <th>Price</th>
-                <th></th>
-                <th></th>
+                <th>Action</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
