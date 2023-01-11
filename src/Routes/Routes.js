@@ -10,7 +10,7 @@ import DashBoardLayout from "../Layout/DashBoardLayout/DashBoardLayout";
 import MyProducts from "../Pages/Dashboard/Seller/MyProducts"
 import BuyerRoute from "./BuyerRoute";
 import MyOrders from "../Pages/Dashboard/Buyer/MyOrders";
-import SellerRoute from "./SellerRoute";
+import SellerRoute from "./SellerRoute"
 import Overview from "../Pages/Dashboard/OverView/Overview";
 import AddProduct from "../Pages/Dashboard/Seller/AddProduct";
 import PrivateRoute from "./PrivateRoute";

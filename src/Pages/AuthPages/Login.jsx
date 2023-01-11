@@ -89,7 +89,7 @@ const Login = () => {
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
             <form onSubmit={handleSubmit(handleLogin)}>
-              <h2 className="text-2xl text-center">Login as Buyer</h2>
+              <h2 className="text-2xl text-center">Login</h2>
               <div className="form-control w-full max-w-xs">
                 <label className="label">
                   {" "}

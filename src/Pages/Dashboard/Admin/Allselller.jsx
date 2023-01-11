@@ -40,7 +40,10 @@ const Allselller = () => {
         console.log(user);
         if (ads.length >= 1) {
             fetch(`http://localhost:5001/verify-ad/${user?.email}`, {
-                method: 'PATCH'
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+                }
             })
                 .then(res => res.json())
                 .then(data => {
@@ -50,6 +53,9 @@ const Allselller = () => {
 
         fetch(`http://localhost:5001/verify-seller/${user?._id}`, {
             method: 'PATCH',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+            }
         })
             .then(res => res.json())
             .then(data => {
@@ -83,6 +89,43 @@ const Allselller = () => {
 
     const handleDelete = (user) => {
         console.log(user);
+        fetch(`http://localhost:5001/user-product-delete/${user?.email}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                fetch(`http://localhost:5001/ad-delete/${user?.email}`, {
+                    method: 'DELETE',
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        fetch(`http://localhost:5001/orders-delete/${user?.email}`, {
+                            method: 'DELETE',
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data)
+                                fetch(`http://localhost:5001/user-delete/${user?.email}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+                                    }
+                                })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        console.log(data)
+                                        refetch();
+                                        toast.success("User has been deleted successfully")
+                                        
+                                })
+                        })
+                })
+        })
     }
     
     const closeModal = () => {
@@ -113,7 +156,8 @@ const Allselller = () => {
       {deletingSeller && (
         <ConfirmationModal
           title={`Your are deleting ${deletingSeller.name}`}
-          message={`Email: ${deletingSeller.email}`}
+                    message={`Everything associated with this ${deletingSeller.name} including products,orders,advertisements will be deleted from database. 
+          Since your are using firebase authentication, you must delete ${deletingSeller.email} from there manually!`}
           successAction={handleDelete}
           successButtonName="Delete"
           modalData={deletingSeller}

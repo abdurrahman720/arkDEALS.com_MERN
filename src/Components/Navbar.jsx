@@ -38,7 +38,7 @@ const Navbar = () => {
 
   const handlelogin = (data) => {
     console.log(data.login);
-    if (data.login === "Buyer Login") {
+    if (data.login === "Login") {
       navigate('/login');
     }
     if (data.login === "Seller Login") {
@@ -98,7 +98,7 @@ const Navbar = () => {
                 {...register("login")}
                 className="select input-bordered max-w-xs"
               >
-                <option selected>Buyer Login</option>
+                <option selected>Login</option>
                 <option>Seller Login</option>
               </select>
               <input className="btn btn-xs ml-2" type="submit" value="Go" />
