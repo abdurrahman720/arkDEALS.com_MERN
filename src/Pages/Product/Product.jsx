@@ -10,14 +10,17 @@ import { TiTick } from 'react-icons/ti';
 
 
 const Product = () => {
+
     const product = useLoaderData();
     const navigate = useNavigate()
   const { user } = useContext(AuthContext);
   const [isSeller] = useSeller(user?.email);
     const [isAdmin] = useAdmin(user?.email);
 const [isLoading, setIsLoading] = useState(false)
-    const [isBooking, setIsBooking] = useState(null)
+  const [isBooking, setIsBooking] = useState(null)
+  const[isReporting, setIsReporting] = useState(null)
   const {
+    _id,
       sellerName,
     sellerEmail,
     sellerLocation,
@@ -43,6 +46,10 @@ const [isLoading, setIsLoading] = useState(false)
     const bookNowModal = (product) => {
         setIsBooking(product)
     }
+  
+  const reportModal = (product) => {
+   setIsReporting(product)
+  }
     
     const handleBooking = e => {
         e.preventDefault();
@@ -79,6 +86,37 @@ const [isLoading, setIsLoading] = useState(false)
                 }
         })
     }
+  
+  const handleReport = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    setIsLoading(true);
+    const message = form.message.value;
+    //create reportedItem
+    const repItem = {
+      pID: _id,
+      seller: sellerEmail,
+      message: message,
+      product
+    }
+    fetch(`http://localhost:5001/reported-item-buyer`, {
+      method: 'POST',
+      headers: {
+        'content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+      },
+     body: JSON.stringify(repItem)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        toast.info("Item has been reported. Admin will review it soon!")
+        navigate(`/browse`)
+    })
+
+
+
+  }
     
     if (isLoading) {
         return <Loader></Loader>
@@ -130,6 +168,9 @@ const [isLoading, setIsLoading] = useState(false)
             Book Order
           </label>
         </div>
+        <label disabled={isAdmin || isSeller} onClick={()=>reportModal(product)} htmlFor="report-modal" className="btn btn-xs btn-warning w-32 mx-auto">
+           Report this item
+          </label>
       </div>
 
           {
@@ -205,7 +246,74 @@ const [isLoading, setIsLoading] = useState(false)
               </div>
             </div>
           }
-      
+      { 
+        isReporting &&
+        <div className="report-modal">
+        <input type="checkbox" id="report-modal" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box relative">
+            <label
+                        htmlFor="report-modal"
+                        onClick={()=>setIsReporting(null)}
+              className="btn btn-sm btn-circle absolute right-2 top-2"
+            >
+              ✕
+            </label>
+            <form onSubmit={handleReport} className="grid grid-cols-1 gap-3 mt-10">
+              <input
+                name="itemName"
+                type="text"
+                defaultValue={productName}
+                disabled
+                placeholder="Your Name"
+                              className="input w-full input-bordered"
+                              readOnly
+              />
+              <input
+                name="itemPrice"
+                type="text"
+                defaultValue={`$ ${resalePrice}`}
+                disabled
+                placeholder="Your Name"
+                              className="input w-full input-bordered"
+                              readOnly
+              />
+              <input
+                name="name"
+                type="text"
+                defaultValue={user?.displayName}
+                disabled
+                placeholder="Your Name"
+                className="input w-full input-bordered"
+              />
+              <input
+                name="email"
+                type="email"
+                defaultValue={user?.email}
+                disabled
+                placeholder="Email Address"
+                className="input w-full input-bordered"
+              />
+             
+              <input
+                name="message"
+                type="text"
+                placeholder="Whats wrong with this product?"
+                              className="input w-full input-bordered"
+                              required
+              />
+            
+              <br />
+              <input
+                className="btn btn-warning w-full"
+                type="submit"
+                value="Confirm report"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+      }
       
     </div>
   );
