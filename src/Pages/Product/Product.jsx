@@ -82,7 +82,7 @@ const [isLoading, setIsLoading] = useState(false)
             .then(data => {
                 setIsLoading(false);
                 if (data.acknowledged) {
-                    toast.success("Order has been placed! Pay in MyOrder page")
+                    toast.success("Order has been placed! Wait for seller approval after meeting!")
                     navigate('/dashboard/myorders');
                 }
         })

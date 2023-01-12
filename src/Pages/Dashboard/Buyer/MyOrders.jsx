@@ -36,29 +36,37 @@ const MyOrders = () => {
       .then(res => res.json())
       .then(data => {
         console.log("order status",data)
-        if (data.modifiedCount>=1) {
-          fetch(`http://localhost:5001/products-paid/${order.pId}`, {
-          method: 'PATCH'
-          })
-            .then(res => res.json())
-            .then(data => {
-              console.log("product status",data);
-              if (data.modifiedCount>=1) {
-                fetch(`http://localhost:5001/delete-advertisement/${order.pId}`, {
-                  method: 'DELETE',
-                 
+        fetch(`http://localhost:5001/orders-paid-dup/${order?.pId}`, {
+          method: 'DELETE'
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            if (data.deletedCount >= 1) {
+              fetch(`http://localhost:5001/products-paid/${order.pId}`, {
+                method: 'PATCH'
                 })
                   .then(res => res.json())
                   .then(data => {
-                    console.log("delete",data)
-                    if (data.acknowledged) {
-                      refetch();
-                      toast.success("Payment Succesfull!")
-                    }
+                    console.log("product status",data);
+                    if (data.modifiedCount>=1) {
+                      fetch(`http://localhost:5001/delete-advertisement/${order.pId}`, {
+                        method: 'DELETE',
+                       
+                      })
+                        .then(res => res.json())
+                        .then(data => {
+                          console.log("delete",data)
+                          if (data.acknowledged) {
+                            refetch();
+                            toast.success("Payment Succesfull!")
+                          }
+                      })
+                  }
                 })
             }
-          })
-      }
+        })
+
     })
   };
 

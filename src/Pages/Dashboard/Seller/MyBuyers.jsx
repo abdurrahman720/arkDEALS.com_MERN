@@ -20,6 +20,7 @@ const MyBuyers = () => {
             return data
         }
     })
+    console.log(orders)
 
     const confirmationModal = (order) => {
         setMeetingOrder(order)
@@ -30,6 +31,7 @@ const MyBuyers = () => {
 
     const handleMeet = (order) => {
         console.log(order);
+        console.log(order.meeting)
         fetch(`http://localhost:5001/confirm-meeting/${order._id}`, {
             method: 'PATCH',
             headers: {
@@ -40,7 +42,12 @@ const MyBuyers = () => {
             .then(data => {
                 console.log(data);
                 refetch();
-                toast.success("Meeting is marked as Done!")
+                if (order.meeting === true) {
+                    toast.warn("Meeting is marked as Canceled!")
+                }
+                else {
+                    toast.success("Meeting is marked as Done!")
+               } 
         })
     }
 
