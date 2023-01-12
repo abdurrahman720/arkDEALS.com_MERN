@@ -24,6 +24,7 @@ import Allbuyer from "../Pages/Dashboard/Admin/Allbuyer";
 import Reported from "../Pages/Dashboard/Admin/Reported";
 import ErrorPage from "../Pages/Error/ErrorPage";
 import MyBuyers from "../Pages/Dashboard/Seller/MyBuyers";
+import MyReported from "../Pages/Dashboard/Buyer/MyReported";
 
 
 export const router = createBrowserRouter([
@@ -100,6 +101,12 @@ export const router = createBrowserRouter([
                 path: "/dashboard/myorders",
                 element: <BuyerRoute>
                     <MyOrders></MyOrders>
+                </BuyerRoute>
+            },
+            {
+                path: "/dashboard/my-reported-items",
+                element: <BuyerRoute>
+                  <MyReported></MyReported>
                 </BuyerRoute>
             },
             //for seller
