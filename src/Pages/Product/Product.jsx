@@ -64,7 +64,8 @@ const [isLoading, setIsLoading] = useState(false)
             buyerEmail: user?.email,
             buyerPhone: phone,
         buyerLocation: location,
-            seller: sellerEmail,
+        seller: sellerEmail,
+            meeting:false,
             paid: false,
             product: product
         }

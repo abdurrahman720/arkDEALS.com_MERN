@@ -23,6 +23,7 @@ import Allselller from "../Pages/Dashboard/Admin/Allselller";
 import Allbuyer from "../Pages/Dashboard/Admin/Allbuyer";
 import Reported from "../Pages/Dashboard/Admin/Reported";
 import ErrorPage from "../Pages/Error/ErrorPage";
+import MyBuyers from "../Pages/Dashboard/Seller/MyBuyers";
 
 
 export const router = createBrowserRouter([
@@ -110,6 +111,12 @@ export const router = createBrowserRouter([
                 path: "/dashboard/addproduct",
                 element: <SellerRoute>
                     <AddProduct></AddProduct>
+                </SellerRoute>
+            },
+            {
+                path: "/dashboard/mybuyers",
+                element: <SellerRoute>
+                   <MyBuyers></MyBuyers>
                 </SellerRoute>
             },
             //for admin

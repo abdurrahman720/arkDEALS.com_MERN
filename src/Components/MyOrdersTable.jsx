@@ -6,15 +6,15 @@ import { useNavigate } from 'react-router-dom';
 const MyOrdersTable = ({ order,i , confirmationModal}) => {
   const { product,pId } = order;
   
-  const { data: soldProduct, refetch } = useQuery({
-    queryKey: ['soldProduct'],
-    queryFn: async () => {
-      const res = await fetch(`http://localhost:5001/product/${pId}`);
-      const data = res.json();
-      return data
-    }
-  })
-  console.log(soldProduct);
+  // const { data: soldProduct, refetch } = useQuery({
+  //   queryKey: ['soldProduct'],
+  //   queryFn: async () => {
+  //     const res = await fetch(`http://localhost:5001/product/${pId}`);
+  //     const data = res.json();
+  //     return data
+  //   }
+  // })
+  // console.log(soldProduct);
 
     const navigate = useNavigate()
     return (
@@ -63,7 +63,8 @@ const MyOrdersTable = ({ order,i , confirmationModal}) => {
           </td>
           <td>
           {
-            order?.paid===true && soldProduct?.sold===true ? <span className="badge  badge-sm font-custom2">Paid</span> : order?.paid===false && soldProduct?.sold===true ? <span className="badge badge-warning badge-sm font-custom2">Sold to others</span> : <label onClick={()=>confirmationModal(order)} htmlFor="confirmation-modal" className="btn btn-accent btn-xs">Pay</label>
+
+            order?.paid===true && order?.meeting===true ? <span className="badge  badge-sm font-custom2">Paid</span> :  order?.meeting===false ? <span className="badge badge-warning badge-sm font-custom2">Meeting pending</span> : order?.paid===false && order?.meeting===true && <label onClick={()=>confirmationModal(order)} htmlFor="confirmation-modal" className="btn  btn-xs">Pay</label>
          }
           </td>
         </tr>

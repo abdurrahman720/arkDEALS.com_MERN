@@ -29,6 +29,7 @@ const DashBoardLayout = () => {
                         {
                             isBuyer && <>
                              <li><Link to="/dashboard/myorders">My Orders</Link></li>
+                             <li><Link to="/dashboard/my-reported-items">My Reported Items</Link></li>
                         {/* <li><Link to="/dashboard/wishlist">My WishList</Link></li> */}
                             </>
                        }
@@ -43,6 +44,7 @@ const DashBoardLayout = () => {
                         {
                             isSeller && 
                             <>
+                            <li><Link to='/dashboard/mybuyers'>My Buyers</Link></li>
                             <li><Link to='/dashboard/myproducts'>My Products</Link></li>
                             <li><Link to='/dashboard/addproduct'>Add Products</Link></li>
                             </>
