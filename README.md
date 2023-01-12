@@ -41,13 +41,13 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 4. Sellers can keep track of all of thier products even it is sold. 
 5. Seller can be verified by Admin and a verified badge will be shown after seller name everywhere.
 
-### `Dashboard: My Buyers`
+#### `Dashboard: My Buyers`
 1. All the orders of the seller are shown here with buyer details and his location.
 2. After meeting with the buyer, seller can approve the buyer for payment by clicking **meet** button. The Status then will change into **pending payment** . Another button will be visible **cancel meeting**
 3. After buyer succesful payment, The order status will be changed into sold. 
 4. Rest of the orders with same product will be removed from the list.
 
-### `Dashboard: My Products`
+#### `Dashboard: My Products`
 1. All the products posted by the seller are shown here with **sold** or **unsold** status
 2. Seller can advertise any product from this list. 
 3. Seller can view details with **view details** button 
