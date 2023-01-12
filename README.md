@@ -1,6 +1,6 @@
 # arkDEALS.com
 ****Explore and share thousands of delicious recipes with our foodie community! Discover and review the best dishes from around the globe!****
-Visit Now: [arkDEALS.com](https://ark-foodies.web.app/).
+Visit Now: [arkDEALS.com](https://arkdeals720.web.app).
 
 ## App Features and Functionality
 
@@ -15,6 +15,7 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 6. Buyer, Seller and Admin Role
 7. A FullStack working website for Laptop Resale Company 
 8. Minimalistic Responsive Design with Tailwind CSS 
+9. Stripe Payment method
 
 ### `General Features`
 1. Seperate Login and Registration page for Seller account.
