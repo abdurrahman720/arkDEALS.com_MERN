@@ -25,6 +25,7 @@ import Reported from "../Pages/Dashboard/Admin/Reported";
 import ErrorPage from "../Pages/Error/ErrorPage";
 import MyBuyers from "../Pages/Dashboard/Seller/MyBuyers";
 import MyReported from "../Pages/Dashboard/Buyer/MyReported";
+import Payment from "../Pages/Dashboard/Buyer/Payment/Payment";
 
 
 export const router = createBrowserRouter([
@@ -109,6 +110,12 @@ export const router = createBrowserRouter([
                   <MyReported></MyReported>
                 </BuyerRoute>
             },
+            {
+                path: `/dashboard/payment/:id`,
+                element: <Payment></Payment>,
+                loader: ({params})=> fetch(`http://localhost:5001/orders/${params.id}`)
+            },
+            
             //for seller
             {
                 path: "/dashboard/myproducts",

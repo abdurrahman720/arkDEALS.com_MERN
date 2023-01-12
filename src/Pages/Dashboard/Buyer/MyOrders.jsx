@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../../Components/ConfirmationModal";
 import MyOrdersTable from "../../../Components/MyOrdersTable";
@@ -7,6 +8,7 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyOrders = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [payOrder, setPayOrder] = useState(null);
   const { data: orders = [], refetch } = useQuery({
     queryKey: ["orders"],
@@ -30,45 +32,12 @@ const MyOrders = () => {
 
   const handlePay = (order) => {
     console.log(order);
-    fetch(`http://localhost:5001/orders-paid/${order._id}`, {
-       method: 'PATCH'
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("order status",data)
-        fetch(`http://localhost:5001/orders-paid-dup/${order?.pId}`, {
-          method: 'DELETE'
-        })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data)
-            if (data.deletedCount >= 1) {
-              fetch(`http://localhost:5001/products-paid/${order.pId}`, {
-                method: 'PATCH'
-                })
-                  .then(res => res.json())
-                  .then(data => {
-                    console.log("product status",data);
-                    if (data.modifiedCount>=1) {
-                      fetch(`http://localhost:5001/delete-advertisement/${order.pId}`, {
-                        method: 'DELETE',
-                       
-                      })
-                        .then(res => res.json())
-                        .then(data => {
-                          console.log("delete",data)
-                          if (data.acknowledged) {
-                            refetch();
-                            toast.success("Payment Succesfull!")
-                          }
-                      })
-                  }
-                })
-            }
-        })
-
-    })
+    
   };
+
+  const handlePaymentPage = (order) => {
+    navigate(`/dashboard/payment/${order._id}`)
+  }
 
   const closeModal = () => {
     setPayOrder(null);
@@ -107,8 +76,8 @@ const MyOrders = () => {
         <ConfirmationModal
           title={`Payment for ${payOrder.product.productName}`}
           message={`Your are going to pay $ ${payOrder.product.resalePrice}`}
-          successAction={handlePay}
-          successButtonName="Pay"
+          successAction={handlePaymentPage}
+          successButtonName="Go to Payment Page"
           modalData={payOrder}
           closeModal={closeModal}
         ></ConfirmationModal>
