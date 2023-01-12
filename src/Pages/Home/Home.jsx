@@ -5,6 +5,7 @@ import useSeller from '../../hooks/useSeller';
 import Advertisement from './Advertisement/Advertisement';
 import Banner from './Banner/Banner';
 import Categories from './Categories/Categories';
+import Steps from './Steps/Steps';
 
 const Home = () => {
     const { user } = useContext(AuthContext);
@@ -27,6 +28,7 @@ const Home = () => {
             {
                 ads?.length>=1 && <Advertisement ads={ads}></Advertisement>
             }
+            <Steps></Steps>
         </div>
     );
 };
