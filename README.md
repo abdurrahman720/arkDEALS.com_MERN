@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# arkDEALS.com
+****Explore and share thousands of delicious recipes with our foodie community! Discover and review the best dishes from around the globe!****
+Visit Now: [arkDEALS.com](https://ark-foodies.web.app/).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## App Features and Functionality
 
-## Available Scripts
+This is one of my Full Stack Web Application , build using MERN STACK Technology.
 
-In the project directory, you can run:
+ ****MERN STACK Technology for Fronted and Backend Development****
+1. Used ReactJs for Fronted Development
+2. User Authentication with FireBase and **Authorisation with JWT Token**
+3. Database Management with MongoDB CRUD operations 
+4. Backend Server Management with NodeJs with ExpressJS framework
+5. Used React-Router for Single Page Application
+6. Buyer, Seller and Admin Role
+7. A FullStack working website for Laptop Resale Company 
+8. Minimalistic Responsive Design with Tailwind CSS 
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## `Buyer Role -Features`
+1. Buyer can book order by providing phone number and location with a confirmation modal
+2. After a meeting with seller, buyer can able to pay for the order.
+3. Buyer can report products with a message to admin.
 
-### `yarn test`
+### Dashboard: My Orders
+1. All the booking orders of the buyer is placed here and there will be a **meeting pending** badge untill seller approves to pay after meeting with buyer
+2. After getting approval from seller, buyer can pay for the order.
+3. Buyer will have the order saved with a status of **paid**
+4. If other buyer pays before, the order will be deleted from the list **since it is a reselling website, product is available only for one quantity.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Dashboard: My Reported Items
+1. All the items reported by the buyer is shown here.
+2. Buyers can remove the item if they think it was a mistake
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## `Seller Role -Features`
+1. Seller can add and delete own products.
+2. Seller can approve buyers for payment after a meeting 
+3. Seller can advertise own products
+4. Sellers can keep track of all of thier products even it is sold. 
+5. Seller can be verified by Admin and a verified badge will be shown after seller name everywhere.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Dashboard: My Buyers
+1. All the orders of the seller are shown here with buyer details and his location.
+2. After meeting with the buyer, seller can approve the buyer for payment by clicking **meet** button. The Status then will change into **pending payment** . Another button will be visible **cancel meeting**
+3. After buyer succesful payment, The order status will be changed into sold. 
+4. Rest of the orders with same product will be removed from the list.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Dashboard: My Products
+1. All the products posted by the seller are shown here with **sold** or **unsold** status
+2. Seller can advertise any product from this list. 
+3. Seller can view details with **view details** button 
+4. Sellers can delete any of thier products with **delete** button
 
-### `yarn eject`
+### Dashboard: Add Products
+1. Seller can post new product for sale from here with image uploading
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### `Known Bugs/issues/limitations`
 
-## Learn More
+**The project is at very intial level. Several Bugs maybe found**
+1. In input field, images can not be uploaded from local device. A link is needed...
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### `Upcoming Feature`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Image uploading from local device will be available
+2. Reviwes will be sorted by time
+3. Statistic of Recipes, Reviews, Users wil be updated dynamically 
+4. User Profile Page where they can update their name and photo with
+5. UI Design and Animations...

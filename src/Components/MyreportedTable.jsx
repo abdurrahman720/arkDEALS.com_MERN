@@ -42,7 +42,7 @@ const MyreportedTable = ({ item, i,handleSafe }) => {
             <Link to={`/browse/product/${product?._id}`} className="btn btn-accent btn-xs">View Item</Link>
             </td>
           <td>
-            <button onClick={()=>handleSafe(product)} className="btn btn-xs">Mark as Safe</button>
+            <button onClick={()=>handleSafe(product)} className="btn btn-xs">Remove from Reported Items</button>
           </td>
           
           
