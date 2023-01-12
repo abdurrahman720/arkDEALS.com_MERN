@@ -16,7 +16,15 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 7. A FullStack working website for Laptop Resale Company 
 8. Minimalistic Responsive Design with Tailwind CSS 
 
-
+### `General Features`
+1. Seperate Login and Registration page for Seller account.
+2. Seller and Admin can not buy products.
+3. **Product is not removed from database** even after it is sold untill the seller removes it from his product dashboard
+4. Only **UnSold** products are shown in the browse page. 
+5. The Advertisement section is invisible on the homepage when there is no product on Advertisement. 
+6. After a product is sold, it is removed from the Advertisement section.
+7. A verified badge is shown with the verified seller name.
+8. **Dashboard: Profile Overview** : The name, email and role of the user and verification status of seller are shown here. 
 
 ## `Buyer Role -Features`
 1. Buyer can book order by providing phone number and location with a confirmation modal
@@ -41,33 +49,51 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 4. Sellers can keep track of all of thier products even it is sold. 
 5. Seller can be verified by Admin and a verified badge will be shown after seller name everywhere.
 
-#### `Dashboard: My Buyers`
+### `Dashboard: My Buyers`
 1. All the orders of the seller are shown here with buyer details and his location.
 2. After meeting with the buyer, seller can approve the buyer for payment by clicking **meet** button. The Status then will change into **pending payment** . Another button will be visible **cancel meeting**
 3. After buyer succesful payment, The order status will be changed into sold. 
 4. Rest of the orders with same product will be removed from the list.
 
-#### `Dashboard: My Products`
+### `Dashboard: My Products`
 1. All the products posted by the seller are shown here with **sold** or **unsold** status
 2. Seller can advertise any product from this list. 
 3. Seller can view details with **view details** button 
 4. Sellers can delete any of thier products with **delete** button
 
-### Dashboard: Add Products
+### `Dashboard: Add Products`
 1. Seller can post new product for sale from here with image uploading
 
+## `Admin Role -Features`
+1. Admin can delete users (seller, buyer) and verify seller 
+2. Admin can review reported products from buyer.
+
+### `Dashboard: All Sellers`
+1. All the Sellers are listed here with their details
+2. Admin can verify the seller with **verify** button and also can remove verified satatus if needed.
+3. Admin can delete any seller and all the products,orders, advertisements associated with the seller will be deleted as well.
+
+### `Dashboard: All Buyers`
+1. All the Buyers are listed here with their details
+2. Admin can **delete** any buyer and all the orders associated with the buyer will be deleted as well.
+
+### `Dashboard: Reported Products`
+1. All the reported items will be listed here with a **message** from the buyer
+2. Reporter(buyer) Details and Seller details of the product will be shown here.
+3. With **View Item* button, Admin can view the item 
+4. Admin can mark the item as safe with **Mark as safe** button 
+5. If Admin can Delete the product with **Delete** button
 
 
 
-### `Known Bugs/issues/limitations`
 
 **The project is at very intial level. Several Bugs maybe found**
-1. In input field, images can not be uploaded from local device. A link is needed...
+
 
 ### `Upcoming Feature`
 
-1. Image uploading from local device will be available
-2. Reviwes will be sorted by time
-3. Statistic of Recipes, Reviews, Users wil be updated dynamically 
-4. User Profile Page where they can update their name and photo with
+1. Seller will able to edit their product details
+2. Admin will able to delete any product, whenever it is needed.
+3. Both Buyer and Seller will be able to delete their orders after those are fullfilled.
+4. Profile Overview Page where users can update their name and photo
 5. UI Design and Animations...
