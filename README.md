@@ -23,13 +23,13 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 2. After a meeting with seller, buyer can able to pay for the order.
 3. Buyer can report products with a message to admin.
 
-### Dashboard: My Orders
+### `Dashboard: My Orders`
 1. All the booking orders of the buyer is placed here and there will be a **meeting pending** badge untill seller approves to pay after meeting with buyer
 2. After getting approval from seller, buyer can pay for the order.
 3. Buyer will have the order saved with a status of **paid**
 4. If other buyer pays before, the order will be deleted from the list **since it is a reselling website, product is available only for one quantity.
 
-### Dashboard: My Reported Items
+### `Dashboard: My Reported Items`
 1. All the items reported by the buyer is shown here.
 2. Buyers can remove the item if they think it was a mistake
 
@@ -41,13 +41,13 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 4. Sellers can keep track of all of thier products even it is sold. 
 5. Seller can be verified by Admin and a verified badge will be shown after seller name everywhere.
 
-### Dashboard: My Buyers
+### `Dashboard: My Buyers`
 1. All the orders of the seller are shown here with buyer details and his location.
 2. After meeting with the buyer, seller can approve the buyer for payment by clicking **meet** button. The Status then will change into **pending payment** . Another button will be visible **cancel meeting**
 3. After buyer succesful payment, The order status will be changed into sold. 
 4. Rest of the orders with same product will be removed from the list.
 
-### Dashboard: My Products
+### `Dashboard: My Products`
 1. All the products posted by the seller are shown here with **sold** or **unsold** status
 2. Seller can advertise any product from this list. 
 3. Seller can view details with **view details** button 
