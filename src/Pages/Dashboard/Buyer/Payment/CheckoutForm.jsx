@@ -71,7 +71,7 @@ const CheckoutForm = ({ order }) => {
       setSuccess("Congrats");
       setTransactionId(paymentIntent.id);
       const tranID = {
-        tID: transactionId,
+        tID: paymentIntent?.id,
       };
 
       fetch(`https://ark-deals-server.vercel.app/orders-paid/${order._id}`, {
@@ -93,37 +93,33 @@ const CheckoutForm = ({ order }) => {
             .then((res) => res.json())
             .then((data) => {
               console.log(data);
-              if (data.deletedCount >= 1) {
-                fetch(
-                  `https://ark-deals-server.vercel.app/products-paid/${order.pId}`,
-                  {
-                    method: "PATCH",
-                  }
-                )
-                  .then((res) => res.json())
-                  .then((data) => {
-                    console.log("product status", data);
-                    if (data.modifiedCount >= 1) {
-                      fetch(
-                        `https://ark-deals-server.vercel.app/delete-advertisement/${order.pId}`,
-                        {
-                          method: "DELETE",
+
+              fetch(
+                `https://ark-deals-server.vercel.app/products-paid/${order.pId}`,
+                {
+                  method: "PATCH",
+                }
+              )
+                .then((res) => res.json())
+                .then((data) => {
+                  console.log("product status", data);
+                  if (data.modifiedCount >= 1) {
+                    fetch(
+                      `https://ark-deals-server.vercel.app/delete-advertisement/${order.pId}`,
+                      {
+                        method: "DELETE",
+                      }
+                    )
+                      .then((res) => res.json())
+                      .then((data) => {
+                        console.log("delete", data);
+                        if (data.acknowledged) {
+                          toast.success("Payment Succesfull!");
+                          navigate("/dashboard/myorders");
                         }
-                      )
-                        .then((res) => res.json())
-                        .then((data) => {
-                          console.log("delete", data);
-                          if (data.acknowledged) {
-                            toast.success("Payment Succesfull!");
-                            navigate("/dashboard/myorders");
-                          }
-                        });
-                    }
-                  });
-              } else {
-                toast.success("Payment Succesfull!");
-                navigate("/dashboard/myorders");
-              }
+                      });
+                  }
+                });
             });
         });
     }
