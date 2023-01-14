@@ -1,59 +1,60 @@
-import { useQuery } from '@tanstack/react-query';
-import React, { useContext, useState } from 'react';
-import { toast } from 'react-toastify';
-import ConfirmationModal from '../../../Components/ConfirmationModal';
-import MybuyersTable from '../../../Components/MybuyersTable';
-import { AuthContext } from '../../../Context/AuthProvider';
+import { useQuery } from "@tanstack/react-query";
+import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
+import ConfirmationModal from "../../../Components/ConfirmationModal";
+import MybuyersTable from "../../../Components/MybuyersTable";
+import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyBuyers = () => {
-    const { user } = useContext(AuthContext);
-    const [meetingOrder, setMeetingOrder] = useState(null)
-    const { data: orders = [], refetch } = useQuery({
-        queryKey: ['orders'],
-        queryFn: async () => {
-            const res = await fetch(`http://localhost:5001/mybuyers?email=${user?.email}`, {
-                headers: {
-                    authorization: `bearer ${localStorage.getItem('arkDeals')}`
-                }
-            })
-            const data = await res.json();
-            return data
+  const { user } = useContext(AuthContext);
+  const [meetingOrder, setMeetingOrder] = useState(null);
+  const { data: orders = [], refetch } = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      const res = await fetch(
+        `https://ark-deals-server.vercel.app/mybuyers?email=${user?.email}`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("arkDeals")}`,
+          },
         }
+      );
+      const data = await res.json();
+      return data;
+    },
+  });
+  console.log(orders);
+
+  const confirmationModal = (order) => {
+    setMeetingOrder(order);
+  };
+  const closeModal = () => {
+    setMeetingOrder(null);
+  };
+
+  const handleMeet = (order) => {
+    console.log(order);
+    console.log(order.meeting);
+    fetch(`https://ark-deals-server.vercel.app/confirm-meeting/${order._id}`, {
+      method: "PATCH",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("arkDeals")}`,
+      },
     })
-    console.log(orders)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        refetch();
+        if (order.meeting === true) {
+          toast.warn("Meeting is marked as Canceled!");
+        } else {
+          toast.success("Meeting is marked as Done!");
+        }
+      });
+  };
 
-    const confirmationModal = (order) => {
-        setMeetingOrder(order)
-    }
-    const closeModal = () => {
-        setMeetingOrder(null)
-    }
-
-    const handleMeet = (order) => {
-        console.log(order);
-        console.log(order.meeting)
-        fetch(`http://localhost:5001/confirm-meeting/${order._id}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `bearer ${localStorage.getItem('arkDeals')}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                refetch();
-                if (order.meeting === true) {
-                    toast.warn("Meeting is marked as Canceled!")
-                }
-                else {
-                    toast.success("Meeting is marked as Done!")
-               } 
-        })
-    }
-
-
-    return (
-        <div>
+  return (
+    <div>
       <div className="bg-base-100">
         <h2 className="text-center text-xl">My Orders</h2>
         <div className="overflow-x-auto w-full">
@@ -74,8 +75,8 @@ const MyBuyers = () => {
                   key={order._id}
                   order={order}
                   confirmationModal={confirmationModal}
-                      i={i}
-                      handleMeet={handleMeet}
+                  i={i}
+                  handleMeet={handleMeet}
                 ></MybuyersTable>
               ))}
             </tbody>
@@ -93,7 +94,7 @@ const MyBuyers = () => {
         ></ConfirmationModal>
       )}
     </div>
-    );
+  );
 };
 
 export default MyBuyers;

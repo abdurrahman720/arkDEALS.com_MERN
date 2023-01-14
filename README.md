@@ -1,5 +1,5 @@
 # arkDEALS.com
-****Explore and share thousands of delicious recipes with our foodie community! Discover and review the best dishes from around the globe!****
+**The ultimate destination for buying and selling second-hand laptops. Sellers can easily post their products for sale, and buyers can easily browse and book orders. We strive to provide a hassle-free and reliable platform for buying and selling used laptops.**
 Visit Now: [arkDEALS.com](https://arkdeals720.web.app).
 
 ## App Features and Functionality
@@ -15,7 +15,7 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 6. Buyer, Seller and Admin Role
 7. A FullStack working website for Laptop Resale Company 
 8. Minimalistic Responsive Design with Tailwind CSS 
-9. Stripe Payment method
+9. **Stripe Payment method**
 
 ### `General Features`
 1. Seperate Login and Registration page for Seller account.
@@ -34,7 +34,7 @@ This is one of my Full Stack Web Application , build using MERN STACK Technology
 
 ### `Dashboard: My Orders`
 1. All the booking orders of the buyer is placed here and there will be a **meeting pending** badge untill seller approves to pay after meeting with buyer
-2. After getting approval from seller, buyer can pay for the order.
+2. After getting approval from seller, buyer can pay for the order. **Payment** is done through **Stripe**
 3. Buyer will have the order saved with a status of **paid**
 4. If other buyer pays before, the order will be deleted from the list **since it is a reselling website, product is available only for one quantity.
 

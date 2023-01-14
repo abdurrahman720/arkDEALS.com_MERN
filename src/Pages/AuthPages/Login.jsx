@@ -14,7 +14,7 @@ const Login = () => {
   } = useForm();
 
   const location = useLocation();
-  const from = location?.state?.from?.pathname || '/'
+  const from = location?.state?.from?.pathname || "/";
 
   const [loginError, setLoginError] = useState("");
 
@@ -26,55 +26,59 @@ const Login = () => {
         const user = userCredentials.user;
         console.log(user);
         //jwt token
-        fetch(`http://localhost:5001/jwt?email=${user?.email}`)
+        fetch(`https://ark-deals-server.vercel.app/jwt?email=${user?.email}`)
           .then((res) => res.json())
           .then((data) => {
             console.log(data.accessToken);
             localStorage.setItem("arkDeals", data.accessToken);
             toast.success("Login SuccessFully!");
-            navigate(from, {replace: true});
+            navigate(from, { replace: true });
           });
       })
       .catch((err) => {
         setLoginError(err.message);
-        isLoading(false)
+        isLoading(false);
       });
   };
 
   const handleGoogleSign = () => {
-    googleSign().then((res) => {
-      const signedUser = res.user;
-      console.log(signedUser);
-      const user = {
-        name: signedUser.displayName,
-        email: signedUser.email,
-        role: "buyer",
-      };
-      fetch(`http://localhost:5001/add-users`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(user),
+    googleSign()
+      .then((res) => {
+        const signedUser = res.user;
+        console.log(signedUser);
+        const user = {
+          name: signedUser.displayName,
+          email: signedUser.email,
+          role: "buyer",
+        };
+        fetch(`https://ark-deals-server.vercel.app/add-users`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.acknowledged) {
+              //jwt token
+              fetch(
+                `https://ark-deals-server.vercel.app/jwt?email=${user?.email}`
+              )
+                .then((res) => res.json())
+                .then((data) => {
+                  console.log(data.accessToken);
+                  localStorage.setItem("arkDeals", data.accessToken);
+                  toast.success("Registration Success as Buyer!");
+                  navigate("/");
+                });
+            }
+          });
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.acknowledged) {
-            //jwt token
-            fetch(`http://localhost:5001/jwt?email=${user?.email}`)
-              .then((res) => res.json())
-              .then((data) => {
-                console.log(data.accessToken);
-                localStorage.setItem("arkDeals", data.accessToken);
-                toast.success("Registration Success as Buyer!");
-                navigate("/");
-              });
-          }
-        });
-    }).catch(err => {
-      setLoginError(err.message);
-      isLoading(false)
-    })
+      .catch((err) => {
+        setLoginError(err.message);
+        isLoading(false);
+      });
   };
 
   return (

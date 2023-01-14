@@ -9,11 +9,14 @@ const Reported = () => {
   const { data: items = [], refetch } = useQuery({
     queryKey: ["items"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5001/reported-item`, {
-        headers: {
-          authorization: `bearer ${localStorage.getItem("arkDeals")}`,
-        },
-      });
+      const res = await fetch(
+        `https://ark-deals-server.vercel.app/reported-item`,
+        {
+          headers: {
+            authorization: `bearer ${localStorage.getItem("arkDeals")}`,
+          },
+        }
+      );
       const data = await res.json();
       return data;
     },
@@ -28,7 +31,7 @@ const Reported = () => {
 
   const handleSafe = (product) => {
     console.log(product);
-    fetch(`http://localhost:5001/reported-item/${product._id}`, {
+    fetch(`https://ark-deals-server.vercel.app/reported-item/${product._id}`, {
       method: "DELETE",
       headers: {
         authorization: `bearer ${localStorage.getItem("arkDeals")}`,
@@ -44,41 +47,47 @@ const Reported = () => {
   const handleDelete = (product) => {
     console.log(product);
     if (product.advertised === true) {
-      fetch(`http://localhost:5001/delete-advertisement/${product._id}`, {
-        method: "DELETE",
-      })
+      fetch(
+        `https://ark-deals-server.vercel.app/delete-advertisement/${product._id}`,
+        {
+          method: "DELETE",
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           if (data.deletedCount >= 1) {
-            refetch()
+            refetch();
           }
         });
     }
-    fetch(`http://localhost:5001/reported-item/${product._id}`, {
-        method: "DELETE",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("arkDeals")}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
+    fetch(`https://ark-deals-server.vercel.app/reported-item/${product._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("arkDeals")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        fetch(
+          `https://ark-deals-server.vercel.app/delete-product/${product._id}`,
+          {
+            method: "DELETE",
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
             console.log(data);
-            fetch(`http://localhost:5001/delete-product/${product._id}`, {
-              method: 'DELETE',
-              headers: {
-                authorization: `Bearer ${localStorage.getItem('arkDeals')}`
-              }
-            })
-              .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                if (data.deletedCount === 1) {
-                  refetch()
-                  toast.warning('Product deleted successfully!')
-                }
-            })
-        });
+            if (data.deletedCount === 1) {
+              refetch();
+              toast.warning("Product deleted successfully!");
+            }
+          });
+      });
   };
 
   return (

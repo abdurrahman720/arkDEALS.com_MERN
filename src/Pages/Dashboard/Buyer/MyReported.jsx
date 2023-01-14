@@ -1,37 +1,39 @@
-import { useQuery } from '@tanstack/react-query';
-import React, { useContext } from 'react';
-import { toast } from 'react-toastify';
-import MyreportedTable from '../../../Components/MyreportedTable';
-import { AuthContext } from '../../../Context/AuthProvider';
+import { useQuery } from "@tanstack/react-query";
+import React, { useContext } from "react";
+import { toast } from "react-toastify";
+import MyreportedTable from "../../../Components/MyreportedTable";
+import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyReported = () => {
-    const { user } = useContext(AuthContext);
-    const { data: items=[],refetch } = useQuery({
-        queryKey: ['items'],
-        queryFn: async () => {
-            const res = await fetch(`http://localhost:5001/reported-item-buyer?email=${user?.email}`)
-            const data = res.json();
-            return data;
-        }
+  const { user } = useContext(AuthContext);
+  const { data: items = [], refetch } = useQuery({
+    queryKey: ["items"],
+    queryFn: async () => {
+      const res = await fetch(
+        `https://ark-deals-server.vercel.app/reported-item-buyer?email=${user?.email}`
+      );
+      const data = res.json();
+      return data;
+    },
+  });
+  console.log(items);
+  const handleSafe = (product) => {
+    console.log(product);
+    fetch(`https://ark-deals-server.vercel.app/reported-item/${product._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("arkDeals")}`,
+      },
     })
-    console.log(items);
-    const handleSafe = (product) => {
-        console.log(product);
-        fetch(`http://localhost:5001/reported-item/${product._id}`, {
-          method: "DELETE",
-          headers: {
-            authorization: `bearer ${localStorage.getItem("arkDeals")}`,
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            refetch();
-            toast.success("Product is marked as Safe!");
-          });
-      };
-    return (
-        <div className="bg-base-100">
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        refetch();
+        toast.success("Product is marked as Safe!");
+      });
+  };
+  return (
+    <div className="bg-base-100">
       <h2 className="text-center text-xl">My Reported Products</h2>
       <div className="overflow-x-auto w-full">
         <table className="table w-full ">
@@ -43,7 +45,6 @@ const MyReported = () => {
               <th>Message</th>
               <th></th>
               <th></th>
-              
             </tr>
           </thead>
           <tbody>
@@ -53,7 +54,6 @@ const MyReported = () => {
                 item={item}
                 i={i}
                 handleSafe={handleSafe}
-                
               ></MyreportedTable>
             ))}
           </tbody>
@@ -70,7 +70,7 @@ const MyReported = () => {
         )} */}
       </div>
     </div>
-    );
+  );
 };
 
 export default MyReported;

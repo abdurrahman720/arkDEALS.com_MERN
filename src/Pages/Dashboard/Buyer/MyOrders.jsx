@@ -14,7 +14,7 @@ const MyOrders = () => {
     queryKey: ["orders"],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5001/myorders?email=${user?.email}`,
+        `https://ark-deals-server.vercel.app/myorders?email=${user?.email}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
@@ -32,12 +32,11 @@ const MyOrders = () => {
 
   const handlePay = (order) => {
     console.log(order);
-    
   };
 
   const handlePaymentPage = (order) => {
-    navigate(`/dashboard/payment/${order._id}`)
-  }
+    navigate(`/dashboard/payment/${order._id}`);
+  };
 
   const closeModal = () => {
     setPayOrder(null);

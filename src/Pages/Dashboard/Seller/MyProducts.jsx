@@ -9,45 +9,46 @@ import { AuthContext } from "../../../Context/AuthProvider";
 
 const MyProducts = () => {
   const { user } = useContext(AuthContext);
-  const [deletingProduct, setDeletingProduct] = useState(null)
+  const [deletingProduct, setDeletingProduct] = useState(null);
   const [slideID, setSlideid] = useState();
 
   const { data: isVerified } = useQuery({
-    queryKey: ['isVerified'],
+    queryKey: ["isVerified"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5001/seller-verified/${user?.email}`)
+      const res = await fetch(
+        `https://ark-deals-server.vercel.app/seller-verified/${user?.email}`
+      );
       const data = await res.json();
-  
-      return data.isverified
-    }
-  })
 
-  const fetchData = async() => {
-    const res = await axios.get(`http://localhost:5001/get-advertisement-sort`)
+      return data.isverified;
+    },
+  });
+
+  const fetchData = async () => {
+    const res = await axios.get(
+      `https://ark-deals-server.vercel.app/get-advertisement-sort`
+    );
     const data = res.data;
 
-        if (data.length === 0) {
-          let id = 1;
-         return setSlideid(id)
-        }
+    if (data.length === 0) {
+      let id = 1;
+      return setSlideid(id);
+    }
 
-        let id = data[0]?.next;
-        
-        setSlideid(id)
-  }
+    let id = data[0]?.next;
+
+    setSlideid(id);
+  };
 
   useEffect(() => {
-    fetchData()
-    },[])
-
-
-
+    fetchData();
+  }, []);
 
   const { data: products = [], refetch } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5001/myproducts?email=${user?.email}`,
+        `https://ark-deals-server.vercel.app/myproducts?email=${user?.email}`,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
@@ -59,14 +60,12 @@ const MyProducts = () => {
     },
   });
 
- 
   const handleAdvertise = (product) => {
     console.log(product);
-   
+
     const next = slideID + 1;
     const prev = slideID - 1;
-   
-    
+
     const advertiseProduct = {
       id: product._id,
       product,
@@ -75,97 +74,102 @@ const MyProducts = () => {
       prev,
       date: new Date(),
       verified: isVerified,
-      seller: product.sellerEmail
-    }
-  console.log(slideID,next,prev,advertiseProduct);
-    
-    fetch(`http://localhost:5001/post-advertisemnet`, {
-      method: 'POST',
+      seller: product.sellerEmail,
+    };
+    console.log(slideID, next, prev, advertiseProduct);
+
+    fetch(`https://ark-deals-server.vercel.app/post-advertisemnet`, {
+      method: "POST",
       headers: {
-        'content-type': 'application/json',
-        authorization: `Bearer ${localStorage.getItem('arkDeals')}`
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
       },
-      body: JSON.stringify(advertiseProduct)
+      body: JSON.stringify(advertiseProduct),
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.acknowledged) {
-          
-         
-          fetch(`http://localhost:5001/advertisement-status/${product._id}`, {
-            method: 'PATCH',
-          })
-            .then(res => res.json())
-            .then(data => {
+          fetch(
+            `https://ark-deals-server.vercel.app/advertisement-status/${product._id}`,
+            {
+              method: "PATCH",
+            }
+          )
+            .then((res) => res.json())
+            .then((data) => {
               console.log(data);
-              refetch()
+              refetch();
               fetchData();
-              toast.success('Product is now on Advertisement')
-          })
-       }
-    })
-  }
- 
-  const handleRemoveAdvertise = (id) => {
-    fetch(`http://localhost:5001/delete-advertisement/${id}`, {
-      method: 'DELETE',
-     
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.deletedCount === 1) {
-          fetch(`http://localhost:5001/advertisement-status/${id}`, {
-            method: 'PATCH',
-          })
-            .then(res => res.json())
-            .then(data => {
-              console.log(data);
-              refetch()
-              fetchData();
-              toast.warning('Product is removed from Advertisement')
-          })
+              toast.success("Product is now on Advertisement");
+            });
         }
+      });
+  };
+
+  const handleRemoveAdvertise = (id) => {
+    fetch(`https://ark-deals-server.vercel.app/delete-advertisement/${id}`, {
+      method: "DELETE",
     })
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount === 1) {
+          fetch(
+            `https://ark-deals-server.vercel.app/advertisement-status/${id}`,
+            {
+              method: "PATCH",
+            }
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              refetch();
+              fetchData();
+              toast.warning("Product is removed from Advertisement");
+            });
+        }
+      });
+  };
 
   const confirmationModal = (product) => {
-    setDeletingProduct(product)
-  }
+    setDeletingProduct(product);
+  };
 
   const handleDelete = (product) => {
     console.log(product);
-    if (product.advertised===true) {
-      fetch(`http://localhost:5001/delete-advertisement/${product._id}`, {
-      method: 'DELETE',
-     
-    })
-        .then(res => res.json())
-        .then(data => {
-          if (data.deletedCount>=1) {
-            refetch()
-            fetchData()
-            toast.warning('Product is removed from Advertisement')
+    if (product.advertised === true) {
+      fetch(
+        `https://ark-deals-server.vercel.app/delete-advertisement/${product._id}`,
+        {
+          method: "DELETE",
         }
-      })
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.deletedCount >= 1) {
+            refetch();
+            fetchData();
+            toast.warning("Product is removed from Advertisement");
+          }
+        });
     }
-    fetch(`http://localhost:5001/delete-product/${product._id}`, {
-      method: 'DELETE',
+    fetch(`https://ark-deals-server.vercel.app/delete-product/${product._id}`, {
+      method: "DELETE",
       headers: {
-        authorization: `Bearer ${localStorage.getItem('arkDeals')}`
-      }
+        authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
+      },
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.deletedCount === 1) {
-          refetch()
-          toast.warning('Product deleted successfully!')
+          refetch();
+          toast.warning("Product deleted successfully!");
         }
-    })
-  }
+      });
+  };
 
   const closeModal = () => {
-    setDeletingProduct(null)
-  }
+    setDeletingProduct(null);
+  };
 
   return (
     <div className="bg-base-100">
@@ -184,21 +188,28 @@ const MyProducts = () => {
             </tr>
           </thead>
           <tbody>
-                      {
-                          products.map((product,i) =><MyProductsTable key={product._id} product={product} i={i} handleAdvertise={handleAdvertise} handleRemoveAdvertise={handleRemoveAdvertise} confirmationModal={confirmationModal}></MyProductsTable>)
-           }
+            {products.map((product, i) => (
+              <MyProductsTable
+                key={product._id}
+                product={product}
+                i={i}
+                handleAdvertise={handleAdvertise}
+                handleRemoveAdvertise={handleRemoveAdvertise}
+                confirmationModal={confirmationModal}
+              ></MyProductsTable>
+            ))}
           </tbody>
         </table>
         {deletingProduct && (
-        <ConfirmationModal
-          title={`Are your sure to delete ${deletingProduct.productName}`}
-          message={`This operation can not be undone`}
-          successAction={handleDelete}
-          successButtonName="Confirm Delete"
-          modalData={deletingProduct}
-          closeModal={closeModal}
-        ></ConfirmationModal>
-      )}
+          <ConfirmationModal
+            title={`Are your sure to delete ${deletingProduct.productName}`}
+            message={`This operation can not be undone`}
+            successAction={handleDelete}
+            successButtonName="Confirm Delete"
+            modalData={deletingProduct}
+            closeModal={closeModal}
+          ></ConfirmationModal>
+        )}
       </div>
     </div>
   );

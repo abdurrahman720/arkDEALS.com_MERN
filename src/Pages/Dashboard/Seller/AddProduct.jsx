@@ -16,114 +16,112 @@ const AddProduct = () => {
   const imgHostKey = process.env.REACT_APP_imgbb_key;
   const [loading, setLoading] = useState(false);
 
-    const { data: isVerified } = useQuery({
-    queryKey: ['isVerified'],
+  const { data: isVerified } = useQuery({
+    queryKey: ["isVerified"],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5001/seller-verified/${user?.email}`)
+      const res = await fetch(
+        `https://ark-deals-server.vercel.app/seller-verified/${user?.email}`
+      );
       const data = await res.json();
-  
-      return data.isverified
-    }
-  })
 
-
+      return data.isverified;
+    },
+  });
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/categories`);
+      const res = await axios.get(
+        `https://ark-deals-server.vercel.app/categories`
+      );
       setCategories(res.data);
     } catch {}
   };
 
   useEffect(() => {
     fetchCategories();
-    
   }, []);
-
 
   const date = moment();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-const {register, handleSubmit,  formState: { errors },} = useForm()
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-    
-  const AddProduct = data => {
-    setLoading(true)
-      console.log(data);
-      const img = data.productImage[0];
-      console.log(img);
-      const formData = new FormData();
-      formData.append('image', img);
-      console.log(formData);
-      const url = `https://api.imgbb.com/1/upload?&key=${imgHostKey}`
-      console.log(url)
-      fetch(url, {
-        method: 'POST',
-        body: formData
-      })
-        .then(res => res.json())
-        .then(imageData => {
-         
-          console.log(imageData)
-          if (imageData.success) {
-            console.log(imageData.data.url);
+  const AddProduct = (data) => {
+    setLoading(true);
+    console.log(data);
+    const img = data.productImage[0];
+    console.log(img);
+    const formData = new FormData();
+    formData.append("image", img);
+    console.log(formData);
+    const url = `https://api.imgbb.com/1/upload?&key=${imgHostKey}`;
+    console.log(url);
+    fetch(url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((imageData) => {
+        console.log(imageData);
+        if (imageData.success) {
+          console.log(imageData.data.url);
 
-            const product = {
-              sellerName: data.sellerName,
-              sellerEmail: data.sellerEmail,
-              sellerLocation: data.sellerLocation,
-              sellerPhone: data.sellerPhone,
-     
-              categoryName: data.categoryName,
-              productName: data.productName,
-              brand: data.brand,
-              resalePrice: data.resalePrice,
-              originalPrice: data.originalPrice,
-              yearOfPurchase: data.yrOfpurchase,
-              condition: data.condition,
-              productDescription: data.description,
-              productImage: imageData.data.url,
-              timeOfPost: date.format('D/MM/YYYY'),
-              timeStamp: new Date(),
-              advertised: false,
-              reported: false,
-              sold: false,
-              verified: isVerified
-            }
-            //post this product on database
-            fetch(`http://localhost:5001/add-product`, {
-              method: 'POST',
-              headers: {
-                'content-type': 'application/json',
-                authorization: `Bearer ${localStorage.getItem('arkDeals')}`
-              },
-              body: JSON.stringify(product)
-            })
-              .then(res => res.json())
-              .then(data => {
-                setLoading(false)
-                console.log(data);
-                if (data.acknowledged) {
-                  toast.success("Your Product is on Live!");
-                  navigate('/dashboard/myproducts');
+          const product = {
+            sellerName: data.sellerName,
+            sellerEmail: data.sellerEmail,
+            sellerLocation: data.sellerLocation,
+            sellerPhone: data.sellerPhone,
+
+            categoryName: data.categoryName,
+            productName: data.productName,
+            brand: data.brand,
+            resalePrice: data.resalePrice,
+            originalPrice: data.originalPrice,
+            yearOfPurchase: data.yrOfpurchase,
+            condition: data.condition,
+            productDescription: data.description,
+            productImage: imageData.data.url,
+            timeOfPost: date.format("D/MM/YYYY"),
+            timeStamp: new Date(),
+            advertised: false,
+            reported: false,
+            sold: false,
+            verified: isVerified,
+          };
+          //post this product on database
+          fetch(`https://ark-deals-server.vercel.app/add-product`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("arkDeals")}`,
+            },
+            body: JSON.stringify(product),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              setLoading(false);
+              console.log(data);
+              if (data.acknowledged) {
+                toast.success("Your Product is on Live!");
+                navigate("/dashboard/myproducts");
               }
-            })
-          }
-      })
-
-      
-      
-    }
+            });
+        }
+      });
+  };
   if (loading) {
-    return <Loader></Loader>
+    return <Loader></Loader>;
   }
-
 
   return (
     <div>
       <h2 className="text-2xl text-center">Add Product for sell!</h2>
-      <form  onSubmit={handleSubmit(AddProduct)} className="w-3/4 mx-auto">
+      <form onSubmit={handleSubmit(AddProduct)} className="w-3/4 mx-auto">
         <div className="form-control w-full  mt-5">
           <label className="label">
             <span className="label-text">Seller Name</span>
@@ -147,7 +145,7 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
             {...register("sellerEmail", { required: "Email is required" })}
             placeholder="Full Name"
             defaultValue={user?.email}
-           readOnly
+            readOnly
           />
         </div>
         <div className="form-control w-full  mt-5">
@@ -284,30 +282,34 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
         <div className="form-control w-full  mt-5 ">
           <label className="label">
             <span className="label-text">Condition</span>
-                  </label>
-                  <select className="select select-bordered"
-                  {...register("condition",{required:true})}
-                  >
-                      <option>Excellent</option>
-                      <option>Good</option>
-                      <option>Fair</option>
-                  </select>
+          </label>
+          <select
+            className="select select-bordered"
+            {...register("condition", { required: true })}
+          >
+            <option>Excellent</option>
+            <option>Good</option>
+            <option>Fair</option>
+          </select>
         </div>
         <div className="form-control w-full  mt-5 ">
           <label className="label">
             <span className="label-text">Tell Us More!</span>
-                  </label>
-                  <textarea className="textarea textarea-bordered"
-                      {...register("description", { required: "You must add a description of the laptop"})}
-                      placeholder="I bought this product on..."
-                  />
-                   {errors.description && (
+          </label>
+          <textarea
+            className="textarea textarea-bordered"
+            {...register("description", {
+              required: "You must add a description of the laptop",
+            })}
+            placeholder="I bought this product on..."
+          />
+          {errors.description && (
             <p className="text-red-600" role="alert">
               {errors.description?.message}
             </p>
           )}
-              </div>
-              <div className="form-control w-full mt-5 ">
+        </div>
+        <div className="form-control w-full mt-5 ">
           <label className="label">
             <span className="label-text">Product Image</span>
           </label>
@@ -323,11 +325,14 @@ const {register, handleSubmit,  formState: { errors },} = useForm()
             </p>
           )}
         </div>
-            <input className="btn w-full my-5" type="submit" value="Post for sale!" /> 
+        <input
+          className="btn w-full my-5"
+          type="submit"
+          value="Post for sale!"
+        />
       </form>
     </div>
   );
 };
 
 export default AddProduct;
-
